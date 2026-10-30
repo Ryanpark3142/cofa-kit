@@ -36,10 +36,10 @@ try {
   const t = core.timeStatus(root);
   let text;
   if (mode === 'start') {
-    const recent = lastLines(path.join(root, 'WORKLOG.md'), 5);
+    const recent = lastLines(path.join(root, 'WORKLOG.md'), 3);
     text = [
-      '[cofa-kit] 세션 시작 상태',
-      t.text,
+      '[cofa-kit] 세션 시작 상태(다른 탭의 세션이 같은 폴더에서 동시에 일하고 있을 수 있다)',
+      core.board(root),
       recent ? `최근 작업 기록:\n${recent}` : '작업 기록 없음 — 지시서 파악부터.',
       '규칙: 요구에 없는 기능 금지 · 슬라이스마다 검증 후 커밋 · 결정은 DECISIONS.md · 증거 없으면 「미검증」.',
     ].join('\n');

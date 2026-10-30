@@ -11,6 +11,13 @@ const WRITE_LOCAL = { readOnlyHint: false, destructiveHint: false, idempotentHin
 
 const TOOLS = [
   {
+    name: 'board',
+    readOnly: true,
+    description: '한눈에 보기: 경과·남은 시간, 요구 상태, 다른 탭의 작업(T), 마지막 실행 증거, 커밋 안 된 변경, 최근 커밋. 새 세션을 시작하거나 다음 할 일을 고를 때 부른다.',
+    inputSchema: { type: 'object', properties: {} },
+    run: () => core.board(root),
+  },
+  {
     name: 'time_status',
     readOnly: true,
     description: '과제 경과·남은 시간과 지금 해야 할 단계를 알려준다. 단계를 바꾸거나 큰 작업을 시작하기 전에 부른다.',
