@@ -15,7 +15,7 @@
 | 구성 | 내용 |
 |---|---|
 | `AGENTS.md` | Codex 작업 규칙(주도권·범위 통제·증거 기반 검증·시간·보고 형식) |
-| `skills/` | 13개: `next`(「다음」 만 치면 단계를 골라 진행) `kickoff` `interview` `plan` `build-slice` `debug` `verify` `delegate` `data-first-look` `playbook` `handoff` `explainback` `submit` |
+| `skills/` | 14개: `next`(「다음」 만 치면 단계를 골라 진행) `kickoff` `interview` `plan` `build-slice` `debug` `verify` `delegate` `data-first-look` `playbook` `handoff` `explain`(이해시키는 설명·확인 질문) `explainback` `submit` |
 | `skills/playbook/references/` | 과제 유형별 요령(웹·데이터·API·기존 코드·자동화·LLM 기능·문서) + 반도체 용어 |
 | `prompts/PROMPTS.md` | 단계별 복사용 요청문, 담당자 질문 예시, 서술형 답변 틀 |
 | `mcp/server.mjs` | 의존성 없는 MCP 서버: 시간 상태·작업/결정 기록·요구사항 추적·제출 점검 |
@@ -43,7 +43,7 @@ mkdir -p /tmp/kit && curl -fsSL https://codeload.github.com/Ryanpark3142/cofa-ki
 설치 스크립트가 하는 일(사용자 파일은 덮어쓰지 않음, `~/.codex` 는 건드리지 않음, 외부 접속 없음):
 - 먼저 `node` 18 이상·`git` 을 확인하고, 없으면 아무것도 바꾸지 않고 멈춘다
 - `AGENTS.md` 생성(이미 있으면 뒤에 덧붙임 — 과제 지침이 우선)
-- `.agents/skills/` 에 스킬 13개 복사(Codex 가 저장소 스킬로 인식)
+- `.agents/skills/` 에 스킬 14개 복사(Codex 가 저장소 스킬로 인식)
 - `PLAN.md` `DECISIONS.md` `WORKLOG.md` 양식 생성
 - `.codex/hooks.json`(프로젝트 훅) 생성 — `/hooks` 에서 신뢰해야 동작
 - 도구 사본을 `.cofa/kit/` 에 둠(`/tmp` 는 환경이 일시정지되면 사라질 수 있어서), `.gitignore` 에 추가
@@ -89,7 +89,7 @@ mkdir -p /tmp/kit && curl -fsSL https://codeload.github.com/Ryanpark3142/cofa-ki
 
 시험 환경 사전 체험(2026-10-31)에서 확인한 것:
 - Codex 한 문장 설치 성공(clone 네트워크 승인·install.sh 실행 승인 각 1번). 작업 폴더가 홈이라 훅은 설계대로 설치되지 않음
-- Codex 가 AGENTS.md·스킬 13개·양식·`kit.mjs` 를 인식. 자세한 관찰은 `docs/exam-day.md` 「사전 체험에서 직접 본 것」
+- Codex 가 AGENTS.md·스킬 13개(당시)·양식·`kit.mjs` 를 인식. 자세한 관찰은 `docs/exam-day.md` 「사전 체험에서 직접 본 것」
 
 확인하지 못한 것:
 - 시험 환경에서의 MCP 탭 등록(체험 때 탭은 비어 있었고 등록하지 않음). 무엇이 안 돼도 `AGENTS.md` + `kit.mjs` 만으로 모든 기능을 쓸 수 있다.

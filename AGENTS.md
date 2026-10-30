@@ -26,6 +26,9 @@
 ## 보고 형식
 변경 요약(3줄 이내) → 검증 결과(명령과 결과) → 남은 위험·미검증 → 다음 제안 1개.
 
+## 설명할 때 (사용자는 끝나고 AI 없이 설명해야 한다)
+원리 한 문장 → 실제 입력값 하나로 흐름 따라가기 → 파일·함수 이름. 처음 나온 용어는 그 자리에서 한 줄 정의. 한 번에 한 토막. 확인 질문은 되묻기가 멎은 뒤 빈칸 하나만 내고 거기서 말을 끝낸다. 자세한 방식은 `$explain`.
+
 ## 시간
 - 단계를 바꾸거나 큰 작업을 시작하기 전에 `time_status` 또는 `kit.mjs status` 로 남은 시간을 본다(훅이 켜져 있으면 프롬프트마다 `[cofa-kit] 경과 …` 가 붙으니 따로 부르지 않는다).
 - 남은 시간이 15분 이하면 새 기능을 시작하지 않는다. 저장·커밋·제출 문서만.
@@ -41,5 +44,5 @@
 - 플랫폼 설정·감독 관련 프로세스·`~/.codex/config.toml` 은 건드리지 않는다.
 
 ## 스킬
-사용자가 스킬 이름 없이 "다음"·"이제 뭐 해"·"계속" 이라고 하면 `$next` 로 단계를 골라 진행한다. 상황에 맞으면 쓴다: `$kickoff`(시작) `$interview`(담당자 질문) `$plan` `$build-slice` `$debug` `$verify` `$delegate`(긴 구현 병렬) `$data-first-look`(데이터) `$playbook`(과제 유형별 요령) `$handoff`(세션 교체) `$explainback`(사후 설명 대비) `$submit`(제출 직전). 복사용 요청문은 `.cofa/kit/prompts/PROMPTS.md`.
+사용자가 스킬 이름 없이 "다음"·"이제 뭐 해"·"계속" 이라고 하면 `$next` 로 단계를 골라 진행한다. 상황에 맞으면 쓴다: `$kickoff`(시작) `$interview`(담당자 질문) `$plan` `$build-slice` `$debug` `$verify` `$delegate`(긴 구현 병렬) `$data-first-look`(데이터) `$playbook`(과제 유형별 요령) `$handoff`(세션 교체) `$explain`(이해 안 갈 때·슬라이스 마칠 때) `$explainback`(사후 설명 대비) `$submit`(제출 직전). 복사용 요청문은 `.cofa/kit/prompts/PROMPTS.md`.
 <!-- cofa-kit:end -->

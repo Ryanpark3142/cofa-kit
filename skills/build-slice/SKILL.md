@@ -17,12 +17,14 @@ description: PLAN.md 의 슬라이스 하나를 구현하고 그 자리에서 �
    - `log_work` 한 줄
    - 커밋: `git add <바뀐 파일> && git commit -m "<type>: <무엇> (<요구 ID>)"`
 7. 실패하면 `$debug`. 같은 수정을 두 번 넘게 반복하지 않는다.
+8. 보고 끝에 `$explain` 의 「슬라이스를 마칠 때」 를 한다(실제 값 하나로 흐름 한 줄, 새 용어 정의, EXPLAIN.md A/B/C 갱신).
 
 ## 보고
 ```
 슬라이스 N 완료 (R2, R3)
 - 변경: src/x.py 의 parse(), tests/test_x.py
 - 검증: `python3 -m pytest -q` → 5 passed (예상 5 passed)
+- 흐름: `POST /todos {"title":"우유"}` → app.py:create_todo() → todos 에 id 1 추가 → 201
 - 미검증: 빈 파일 입력
 - 다음: 슬라이스 N+1
 ```
