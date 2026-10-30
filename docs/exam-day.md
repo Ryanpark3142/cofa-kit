@@ -15,7 +15,7 @@
 ## 과제 시간표
 | 분 | 단계 | 할 일 | 스킬 |
 |---|---|---|---|
-| 0~3 | 설치 | Codex 에 주소 한 문장 → 승인 2번(clone·install.sh) → codex 재시작 | 프롬프트 0 |
+| 0~3 | 설치 | Codex 에 주소 한 문장 → 승인 2번(clone·install.sh) → Codex 끄고 `codex --dangerously-bypass-approvals-and-sandbox` 로 다시 열기(거부되면 `/permissions` → Full Access) | 프롬프트 0 |
 | 3~15 | 파악 | 지시서 정독, 요구 등록, 담당자에게 구체적 질문 하나씩 | `$kickoff` `$interview` `$data-first-look` |
 | 15~30 | 계획 | 설계안 비교 → 선택 → 슬라이스 → PLAN.md → 첫 커밋 | `$playbook` `$plan` |
 | 30~130 | 구현 | 슬라이스마다 구현→검증→커밋. 긴 독립 작업은 위임. 100분에 필수 미완이면 가산 기능 버림 | `$build-slice` `$delegate` `$debug` |

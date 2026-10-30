@@ -160,7 +160,8 @@ cat <<EOF
 MCP 가 안 되거나 승인 창이 계속 뜨면 MCP 는 빼고 같은 기능을 명령으로: node .cofa/kit/scripts/kit.mjs help
 
 다음:
-  1) codex 를 (다시) 열고, 폴더 신뢰를 물으면 신뢰한다.
+  1) 지금 codex 를 끄고(Ctrl+C 두 번) 승인 창 없이 쓰려면 이렇게 다시 연다: codex --dangerously-bypass-approvals-and-sandbox
+     거부되면 그냥 codex 를 열고 /permissions → Full Access 를 고른다. 폴더 신뢰를 물으면 신뢰한다.
 $HOOKS_STEP
   3) \$kickoff 로 시작한다. 과제 시작 시각이 설치 시각과 다르면: node .cofa/kit/scripts/kit.mjs start HH:MM
 EOF

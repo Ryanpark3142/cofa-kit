@@ -20,7 +20,11 @@ Codex 에 시킬 때(실측: 이 한 문장으로 설치까지 됨):
 github.com/Ryanpark3142/cofa-kit 를 /tmp/kit 에 받아서 README 대로 설치해줘
 ```
 
-설치 후 `codex` 를 다시 연다(폴더 신뢰 → 선택: `/hooks` 에서 cofa-kit 훅 신뢰). 확인: `파일을 열지 말고, 지금 받은 지침에 있는 cofa-kit 원칙 6개의 제목과 쓸 수 있는 스킬 이름만 말해줘.`
+설치 후 Codex 를 끄고 **Full Access 로 다시 연다** — 승인 창을 계속 누르지 않기 위해서다:
+```bash
+codex --dangerously-bypass-approvals-and-sandbox
+```
+옵션이 거부되면 `codex` 로 열고 `/permissions` → `Full Access`. 폴더 신뢰를 물으면 신뢰한다(선택: `/hooks` 에서 cofa-kit 훅 신뢰). 확인: `파일을 열지 말고, 지금 받은 지침에 있는 cofa-kit 원칙 6개의 제목과 쓸 수 있는 스킬 이름만 말해줘.`
 
 ---
 

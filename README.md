@@ -10,7 +10,7 @@
 > git clone --depth 1 https://github.com/Ryanpark3142/cofa-kit /tmp/kit && bash /tmp/kit/install.sh
 > ```
 > clone 이 실패하면: `mkdir -p /tmp/kit && curl -fsSL https://codeload.github.com/Ryanpark3142/cofa-kit/tar.gz/refs/heads/main | tar xz -C /tmp/kit --strip-components=1 && bash /tmp/kit/install.sh`
-> 끝나면 출력의 「실행 환경」 요약 3줄과 맨 아래 「다음:」 안내를 사용자에게 그대로 전한다. 이미 `/tmp/kit` 이 있으면 clone 대신 `git -C /tmp/kit pull` 후 install.sh 를 실행한다.
+> 끝나면 출력의 「실행 환경」 요약 3줄과 맨 아래 「다음:」 안내(Full Access 로 다시 여는 명령 포함)를 사용자에게 그대로 전한다. 이미 `/tmp/kit` 이 있으면 clone 대신 `git -C /tmp/kit pull` 후 install.sh 를 실행한다.
 
 | 구성 | 내용 |
 |---|---|
@@ -51,7 +51,7 @@ mkdir -p /tmp/kit && curl -fsSL https://codeload.github.com/Ryanpark3142/cofa-ki
 - IDE 의 MCP 탭에 붙일 JSON 출력
 
 설치 뒤:
-1. `codex` 를 열고 폴더 신뢰를 물으면 신뢰한다.
+1. Codex 를 끄고 **Full Access 로 다시 연다**: `codex --dangerously-bypass-approvals-and-sandbox` (승인 창 없이 진행). 옵션이 거부되면 `codex` 로 열고 `/permissions` → `Full Access`. 폴더 신뢰를 물으면 신뢰한다. 실행 옵션은 그 실행에만 적용되고 `~/.codex/config.toml` 을 고치지 않는다.
 2. (선택) `/hooks` → cofa-kit 훅 2개 신뢰 → 프롬프트마다 `[cofa-kit] 경과 N분 / 남은 M분 · 단계` 가 자동으로 붙는다.
 3. (선택) MCP 탭에 출력된 JSON 을 넣고 Codex 를 다시 연다. `default_tools_approval_mode: approve` 가 있어야 도구마다 승인 창이 뜨지 않는다.
 4. `$kickoff` 로 시작한다.
