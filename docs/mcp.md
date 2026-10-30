@@ -3,8 +3,11 @@
 ## cofa-kit MCP 서버 (포함, 의존성 없음)
 `mcp/server.mjs` — stdio JSON-RPC. Node 만 있으면 된다. 작업 폴더는 `COFA_ROOT` 환경 변수, 없으면 현재 폴더에서 위로 `.cofa`/`.git` 을 찾는다.
 
+MCP 는 선택이다. 같은 기능이 모두 `kit.mjs` 명령에 있고(사전 체험 때 MCP 탭은 비어 있었다), 규칙·스킬은 kit.mjs 를 기본으로 쓴다.
+
 | 도구 | 하는 일 |
 |---|---|
+| `board` | 시간·요구·작업(탭)·마지막 증거·커밋 안 된 변경 한눈에 |
 | `time_status` | 경과·남은 시간, 현재 단계와 할 일 |
 | `log_work` | WORKLOG.md 에 시각과 한 줄 기록 |
 | `log_decision` | DECISIONS.md 에 결정/버린 대안/이유/검증 |
@@ -13,7 +16,7 @@
 | `submission_check` | 제출 전 점검 |
 
 ### 등록 방법
-- **IDE 의 MCP 탭**(JSON): `install.sh` 가 출력하는 블록을 붙여 넣는다.
+- **IDE 의 MCP 탭**(JSON): `node .cofa/kit/scripts/kit.mjs mcp` 가 출력하는 블록(작업 폴더 절대 경로가 들어 있다)을 붙여 넣는다.
   ```json
   {
     "mcpServers": {
@@ -39,7 +42,7 @@
 - **플러그인으로 설치**하면 `.mcp.json` 이 자동 등록된다(Codex 버전에 따라 다름).
 
 ### MCP 가 안 될 때
-같은 기능이 터미널 명령으로 있다: `node .cofa/kit/scripts/kit.mjs status | log | decision | req | check`. AGENTS.md 도 이 명령을 대안으로 안내한다.
+같은 기능이 터미널 명령으로 있다: `node .cofa/kit/scripts/kit.mjs board | status | req | run | commit | task | decision | log | check`. AGENTS.md·스킬은 이 명령을 기본으로 쓴다.
 
 ## 쓸 만한 공개 MCP (선택, 네트워크·npm 이 될 때만)
 | 서버 | 용도 | 등록 예 |
