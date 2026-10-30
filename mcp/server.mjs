@@ -4,10 +4,15 @@ import readline from 'node:readline';
 import * as core from '../lib/core.mjs';
 
 const root = core.resolveRoot();
+// 이 서버가 지원하는 MCP 버전. 클라이언트가 이 밖의 버전을 요청하면 최신 지원 버전으로 답한다(MCP 버전 협상 규칙)
+const SUPPORTED_VERSIONS = ['2025-06-18', '2025-03-26', '2024-11-05'];
+const READ_ONLY = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false };
+const WRITE_LOCAL = { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false };
 
 const TOOLS = [
   {
     name: 'time_status',
+    readOnly: true,
     description: '과제 경과·남은 시간과 지금 해야 할 단계를 알려준다. 단계를 바꾸거나 큰 작업을 시작하기 전에 부른다.',
     inputSchema: { type: 'object', properties: {} },
     run: () => core.timeStatus(root).text,
@@ -51,12 +56,14 @@ const TOOLS = [
   },
   {
     name: 'req_list',
+    readOnly: true,
     description: '요구사항 추적표 전체를 돌려준다.',
     inputSchema: { type: 'object', properties: {} },
     run: () => core.renderReqs(core.loadReqs(root)),
   },
   {
     name: 'submission_check',
+    readOnly: true,
     description: '제출 전 점검: 필수 문서, 미검증 요구, 커밋 안 된 변경, 비밀키 의심 문자열, TODO, 큰 파일.',
     inputSchema: { type: 'object', properties: {} },
     run: () => core.formatCheck(core.submissionCheck(root)),
@@ -73,7 +80,7 @@ function handle(msg) {
       jsonrpc: '2.0',
       id,
       result: {
-        protocolVersion: params?.protocolVersion || '2025-06-18',
+        protocolVersion: SUPPORTED_VERSIONS.includes(params?.protocolVersion) ? params.protocolVersion : SUPPORTED_VERSIONS[0],
         capabilities: { tools: {} },
         serverInfo: { name: 'cofa-kit', version: core.VERSION },
       },
@@ -81,7 +88,8 @@ function handle(msg) {
   }
   if (method === 'ping') return send({ jsonrpc: '2.0', id, result: {} });
   if (method === 'tools/list') {
-    return send({ jsonrpc: '2.0', id, result: { tools: TOOLS.map(({ run, ...t }) => t) } });
+    const tools = TOOLS.map(({ run, readOnly, ...t }) => ({ ...t, annotations: readOnly ? READ_ONLY : WRITE_LOCAL }));
+    return send({ jsonrpc: '2.0', id, result: { tools } });
   }
   if (method === 'tools/call') {
     const tool = TOOLS.find((t) => t.name === params?.name);

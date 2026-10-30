@@ -16,7 +16,15 @@ function readStdin() {
 
 function lastLines(file, n) {
   try {
-    return fs.readFileSync(file, 'utf8').trim().split('\n').filter((l) => l.startsWith('- [')).slice(-n).join('\n');
+    // 긴 기록 줄이 매 세션 컨텍스트를 채우지 않게 줄마다 160자로 자른다
+    return fs
+      .readFileSync(file, 'utf8')
+      .trim()
+      .split('\n')
+      .filter((l) => l.startsWith('- ['))
+      .slice(-n)
+      .map((l) => (l.length > 160 ? l.slice(0, 159) + '…' : l))
+      .join('\n');
   } catch {
     return '';
   }

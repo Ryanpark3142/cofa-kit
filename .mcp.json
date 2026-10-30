@@ -3,7 +3,8 @@
     "cofa-kit": {
       "type": "stdio",
       "command": "node",
-      "args": ["${PLUGIN_ROOT}/mcp/server.mjs"]
+      "args": ["${PLUGIN_ROOT}/mcp/server.mjs"],
+      "default_tools_approval_mode": "approve"
     }
   }
 }

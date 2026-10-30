@@ -10,21 +10,28 @@ const HELP = `사용법: node .cofa/kit/scripts/kit.mjs <명령>
   req add "<요구>" [--source 지시서|담당자|추론] [--status todo]
   req set <ID> [--status todo|doing|done|verified|dropped] [--evidence "<명령·결과>"] [--text ..]
   req list               요구사항 표
+  run -- <명령>           테스트·실행을 돌리고 증거(.cofa/evidence)를 남긴다. 0건 실행은 통과로 치지 않는다
   check                  제출 전 점검
-  env                    실행 환경(언어·패키지·네트워크) 확인`;
+  env [--net]            실행 환경(언어·패키지) 확인. --net 이면 npm 레지스트리 접속도 시험
+  help                   이 도움말`;
 
 function parse(argv) {
   const pos = [];
   const opt = {};
   for (let i = 0; i < argv.length; i++) {
-    if (argv[i].startsWith('--')) opt[argv[i].slice(2)] = argv[i + 1] ?? '', i++;
+    if (argv[i] === '--net') opt.net = true;
+    else if (argv[i].startsWith('--')) opt[argv[i].slice(2)] = argv[i + 1] ?? '', i++;
     else pos.push(argv[i]);
   }
   return { pos, opt };
 }
 
 const root = core.resolveRoot();
-const { pos, opt } = parse(process.argv.slice(2));
+const argv = process.argv.slice(2);
+// run 은 -- 뒤를 통째로 명령으로 받는다(옵션 해석을 하지 않는다)
+const dd = argv.indexOf('--');
+const runCmd = argv[0] === 'run' ? (dd >= 0 ? argv.slice(dd + 1) : argv.slice(1)).join(' ') : '';
+const { pos, opt } = parse(argv[0] === 'run' ? ['run'] : argv);
 const [cmd, ...rest] = pos;
 
 try {
@@ -51,6 +58,13 @@ try {
       else throw new Error('req add | set | list');
       break;
     }
+    case 'run': {
+      const r = core.runEvidence(root, runCmd);
+      console.log(`${r.tail}\n\n[증거 #${r.n}] exit ${r.code} · ${r.ms}ms · ${r.verdict} → ${r.file}`);
+      // 0건 실행은 명령이 성공해도 종료 코드 2(검사한 것이 없음)
+      process.exitCode = r.code !== 0 ? (r.code > 0 ? r.code : 1) : r.verdict === '통과' ? 0 : 2;
+      break;
+    }
     case 'check': {
       const items = core.submissionCheck(root);
       console.log(core.formatCheck(items));
@@ -58,7 +72,7 @@ try {
       break;
     }
     case 'env':
-      console.log(core.envReport(root));
+      console.log(core.envReport(root, { net: !!opt.net }));
       break;
     default:
       console.log(HELP);

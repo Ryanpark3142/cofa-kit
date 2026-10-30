@@ -62,9 +62,17 @@ const kind = (v) => {
   return 'text';
 };
 
+// 날짜 문자열을 정렬 가능한 숫자로(한 자리 월·일도 올바르게 비교)
+const dateKey = (s) => {
+  const m = /^(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})(?:[ T](\d{1,2}):(\d{2})(?::(\d{2}))?)?/.exec(s.trim());
+  return m ? Number(m[1]) * 1e10 + Number(m[2]) * 1e8 + Number(m[3]) * 1e6 + Number(m[4] || 0) * 1e4 + Number(m[5] || 0) * 100 + Number(m[6] || 0) : NaN;
+};
+const PII_NAME = /(name|이름|성명|phone|tel|전화|휴대|email|e-mail|메일|주민|ssn|addr|주소|birth|생년)/i;
+const PII_VALUE = /(^[^@\s]+@[^@\s]+\.[a-z]{2,}$)|(^0\d{1,2}-?\d{3,4}-?\d{4}$)|(^\d{6}-?[1-4]\d{6}$)/i;
+
 const it = parse(text);
 const header = it.next().value || [];
-const cols = header.map((h) => ({ name: h.trim(), kinds: {}, nulls: 0, uniq: new Map(), min: Infinity, max: -Infinity, minS: null, maxS: null, ws: 0 }));
+const cols = header.map((h) => ({ name: h.trim(), kinds: {}, nulls: 0, blanks: 0, uniq: new Map(), min: Infinity, max: -Infinity, minS: null, maxS: null, minK: Infinity, maxK: -Infinity, ws: 0, piiVals: 0 }));
 let n = 0;
 const badRows = [];
 for (const row of it) {
@@ -75,8 +83,13 @@ for (const row of it) {
     const v = row[i] ?? '';
     const k = kind(v);
     c.kinds[k] = (c.kinds[k] || 0) + 1;
-    if (k === 'null') return c.nulls++;
+    if (k === 'null') {
+      if (v.trim() === '') c.blanks++;
+      return c.nulls++;
+    }
     if (v !== v.trim()) c.ws++;
+    if (k === 'text' && PII_VALUE.test(v.trim())) c.piiVals++;
+    if (k === 'text' && /^[가-힣]{2,4}$/.test(v.trim())) c.krNames = (c.krNames || 0) + 1;
     if (c.uniq.size < 50000) c.uniq.set(v, (c.uniq.get(v) || 0) + 1);
     if (k === 'int' || k === 'float') {
       const x = Number(v.replace(/,/g, ''));
@@ -84,8 +97,9 @@ for (const row of it) {
       if (x > c.max) c.max = x;
     } else if (k === 'datetime') {
       (c.dateFmts ||= new Set()).add(v.trim().replace(/\d/g, '9'));
-      if (c.minS === null || v < c.minS) c.minS = v;
-      if (c.maxS === null || v > c.maxS) c.maxS = v;
+      const key = dateKey(v);
+      if (key < c.minK) (c.minK = key), (c.minS = v.trim());
+      if (key > c.maxK) (c.maxK = key), (c.maxS = v.trim());
     }
   });
 }
@@ -104,14 +118,21 @@ for (const c of cols) {
   const kindStr = kinds.map(([k, v]) => `${k}(${v})`).join(' ') || '-';
   const nonNull = n - c.nulls;
   const range = c.min !== Infinity ? `${c.min} ~ ${c.max}` : c.minS ? `${c.minS} ~ ${c.maxS}` : '-';
-  const top = [...c.uniq.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3).map(([v, k]) => `${v.slice(0, 20)}(${k})`).join(', ');
+  // 2~4글자 한글 값이 대부분이고 값이 다양하면 사람 이름일 수 있다(설비명 등이 함께 가려져도 손해는 작다)
+  const krNameLike = nonNull >= 3 && (c.krNames || 0) / nonNull >= 0.8 && c.uniq.size >= nonNull * 0.5;
+  const pii = PII_NAME.test(c.name) || c.piiVals > 0 || krNameLike;
+  // 개인정보 의심 열은 값 자체를 출력하지 않는다(대화·로그에 남지 않게)
+  const top = pii
+    ? '(개인정보 의심 — 값 가림)'
+    : [...c.uniq.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3).map(([v, k]) => `${v.slice(0, 20)}(${k})`).join(', ');
   const warn = [];
   if (kinds.length > 1) warn.push('형식 섞임');
   if (c.dateFmts?.size > 1) warn.push(`날짜 표기 ${c.dateFmts.size}종`);
   if (c.uniq.size === nonNull && nonNull === n && n > 1) warn.push('키 후보');
   if (nonNull && c.uniq.size === 1) warn.push('값 하나뿐');
   if (c.ws) warn.push(`앞뒤 공백 ${c.ws}`);
-  if (/(name|이름|phone|전화|email|메일|주민|addr|주소)/i.test(c.name)) warn.push('개인정보 의심');
-  out.push(`| ${c.name} | ${kindStr} | ${c.nulls}${n ? ` (${((c.nulls / n) * 100).toFixed(1)}%)` : ''} | ${c.uniq.size >= 50000 ? '50000+' : c.uniq.size} | ${range} | ${top.replace(/\|/g, '/')} | ${warn.join(', ')} |`);
+  if (pii) warn.push('개인정보 의심');
+  const nullStr = c.nulls ? `${c.nulls} (${((c.nulls / n) * 100).toFixed(1)}%: 빈칸 ${c.blanks}·NA류 ${c.nulls - c.blanks})` : '0';
+  out.push(`| ${c.name} | ${kindStr} | ${nullStr} | ${c.uniq.size >= 50000 ? '50000+' : c.uniq.size} | ${range} | ${top.replace(/\|/g, '/')} | ${warn.join(', ')} |`);
 }
 console.log(out.join('\n'));
