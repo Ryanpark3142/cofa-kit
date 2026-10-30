@@ -28,9 +28,12 @@ function parse(argv) {
 
 const root = core.resolveRoot();
 const argv = process.argv.slice(2);
-// run 은 -- 뒤를 통째로 명령으로 받는다(옵션 해석을 하지 않는다)
+// run 은 -- 뒤를 통째로 명령으로 받는다(옵션 해석을 하지 않는다).
+// 한 문자열이면 그대로(&&·| 같은 셸 문법 허용), 여러 인자면 인자마다 따옴표로 감싸 원래 경계를 지킨다
+const shQuote = (s) => (/^[\w\/.:=@%+,-]+$/.test(s) ? s : `'${s.replace(/'/g, `'\\''`)}'`);
 const dd = argv.indexOf('--');
-const runCmd = argv[0] === 'run' ? (dd >= 0 ? argv.slice(dd + 1) : argv.slice(1)).join(' ') : '';
+const runArgs = argv[0] === 'run' ? (dd >= 0 ? argv.slice(dd + 1) : argv.slice(1)) : [];
+const runCmd = runArgs.length === 1 ? runArgs[0] : runArgs.map(shQuote).join(' ');
 const { pos, opt } = parse(argv[0] === 'run' ? ['run'] : argv);
 const [cmd, ...rest] = pos;
 
