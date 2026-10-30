@@ -36,9 +36,19 @@ fi
 # 작성자 정보가 없으면 커밋이 전부 실패해 git 기록이 남지 않는다 → 이 저장소에만 기본값
 if ! git config user.email >/dev/null; then
   git config user.email "candidate@localhost"
-  git config user.name "candidate"
-  say "git 작성자 정보가 없어 이 저장소에만 candidate 로 설정했습니다."
+  say "git 작성자 이메일이 없어 이 저장소에만 candidate@localhost 로 설정했습니다."
 fi
+if ! git config user.name >/dev/null; then
+  git config user.name "candidate"
+  say "git 작성자 이름이 없어 이 저장소에만 candidate 로 설정했습니다."
+fi
+
+# .gitignore 끝에 줄바꿈이 없으면 덧붙인 줄이 앞줄에 붙는다 → 먼저 줄바꿈을 맞춘다
+add_ignore() {
+  grep -qxF "$1" .gitignore 2>/dev/null && return 1
+  [ -s .gitignore ] && [ -n "$(tail -c1 .gitignore)" ] && echo >> .gitignore
+  echo "$1" >> .gitignore
+}
 
 # 1) 도구 사본: /tmp 는 환경이 일시정지되면 사라질 수 있어 작업 폴더 안에 둔다
 rm -rf .cofa/kit
@@ -60,6 +70,12 @@ else
   cp "$KIT/AGENTS.md" AGENTS.md
   ADDED+=(AGENTS.md)
   say "AGENTS.md 생성"
+fi
+# 같은 폴더에 AGENTS.override.md 가 있으면 Codex 는 AGENTS.md 대신 그 파일만 읽는다 → 그 파일 뒤에도 덧붙인다
+if [ -f AGENTS.override.md ] && ! grep -qF "$MARK" AGENTS.override.md; then
+  { printf '\n\n'; cat "$KIT/AGENTS.md"; } >> AGENTS.override.md
+  ADDED+=(AGENTS.override.md)
+  say "AGENTS.override.md 가 있어 그 뒤에도 규칙을 덧붙였습니다(Codex 는 이 파일을 AGENTS.md 대신 읽습니다)."
 fi
 
 # 3) 스킬
@@ -114,15 +130,12 @@ if [ ! -e .cofa/started_at ]; then
   node .cofa/kit/scripts/kit.mjs start >/dev/null
   ADDED+=(.cofa/started_at)
 fi
-if ! grep -qxF '.cofa/kit/' .gitignore 2>/dev/null; then
-  echo '.cofa/kit/' >> .gitignore
-  ADDED+=(.gitignore)
-fi
+add_ignore '.cofa/kit/' && ADDED+=(.gitignore)
 # 키트를 작업 폴더 안에 받아 설치한 경우(예: Codex 가 ./cofa-kit 에 clone): 제출물에 섞이지 않게 git 에서 뺀다
 KIT_REL=""
 case "$KIT/" in "$DEST"/*) KIT_REL="${KIT#"$DEST"/}" ;; esac
 if [ -n "$KIT_REL" ]; then
-  grep -qxF "$KIT_REL/" .gitignore || { echo "$KIT_REL/" >> .gitignore; ADDED+=(.gitignore); }
+  add_ignore "$KIT_REL/" && ADDED+=(.gitignore)
   say "키트 원본이 작업 폴더 안($KIT_REL/)에 있어 .gitignore 에 넣었습니다. 도구는 .cofa/kit 에 복사됐으니 지워도 됩니다: rm -rf \"$KIT_REL\""
 fi
 
