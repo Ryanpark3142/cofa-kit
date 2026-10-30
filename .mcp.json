@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "cofa-kit": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["${PLUGIN_ROOT}/mcp/server.mjs"]
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "cofa-kit",
+  "version": "0.1.0",
+  "description": "3시간 AI 활용 실무 과제용 Codex 작업 키트: 요구 파악·담당자 인터뷰·슬라이스 구현·검증·제출·사후 설명 대비 스킬, 시간·기록·요구사항 추적 MCP, 시간 알림 훅. 과제 해법 코드 없음.",
+  "author": { "name": "Ryanpark3142", "url": "https://github.com/Ryanpark3142" },
+  "license": "MIT",
+  "keywords": ["codex", "skills", "mcp", "hackathon", "workflow"],
+  "extensions": {
+    "com.openai": {
+      "hooks": "./hooks/hooks.json",
+      "interface": {
+        "displayName": "cofa-kit",
+        "shortDescription": "요구 파악 → 구현 → 검증 → 설명까지 3시간 과제 작업 키트",
+        "defaultPrompt": ["$kickoff 지시서를 읽고 요구사항과 담당자에게 물을 질문을 정리해줘"]
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "cofa-kit-local",
+  "interface": { "displayName": "cofa-kit" },
+  "plugins": [
+    {
+      "name": "cofa-kit",
+      "source": { "source": "local", "path": "./" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Productivity"
+    }
+  ]
+}

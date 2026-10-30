@@ -1,0 +1,26 @@
+{
+  "description": "cofa-kit: 세션 시작·프롬프트 제출 때 경과 시간과 단계를 컨텍스트로 넣는다. Codex 에서 검토·신뢰한 뒤 동작한다.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/hooks/context.mjs\" start",
+            "statusMessage": "cofa-kit: 시간·작업 기록 불러오는 중"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/hooks/context.mjs\" prompt"
+          }
+        ]
+      }
+    ]
+  }
+}
