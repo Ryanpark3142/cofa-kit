@@ -7,12 +7,20 @@ Codex 에 그대로 붙이거나 조금 고쳐 쓰는 요청문. 공통 틀은 *
 
 ## 0. 설치 (시험장 첫 1분)
 
+**터미널에 직접 친다**(Codex 에 시키면 샌드박스의 네트워크 차단 때문에 승인 창이 한 번 더 뜬다). 작업 폴더에서:
+```bash
+git clone --depth 1 https://github.com/Ryanpark3142/cofa-kit /tmp/kit && bash /tmp/kit/install.sh
 ```
-https://github.com/<아이디>/<저장소> 를 /tmp/kit 에 clone 하고 `bash /tmp/kit/install.sh` 를 작업 폴더에서 실행해줘.
-출력에 나온 실행 환경 요약을 3줄로 알려줘.
+git clone 이 막히면(HTTPS 다운로드만 될 때):
+```bash
+mkdir -p /tmp/kit && curl -fsSL https://codeload.github.com/Ryanpark3142/cofa-kit/tar.gz/refs/heads/main | tar xz -C /tmp/kit --strip-components=1 && bash /tmp/kit/install.sh
+```
+Codex 에 시킬 때:
+```
+https://github.com/Ryanpark3142/cofa-kit 를 /tmp/kit 에 clone 하고 작업 폴더에서 bash /tmp/kit/install.sh 를 실행해줘. 출력의 실행 환경 요약을 3줄로.
 ```
 
-설치 후 Codex 를 다시 열면 AGENTS.md 와 스킬이 읽힌다. 확인: `지금 적용된 AGENTS.md 규칙을 3줄로 요약하고 쓸 수 있는 스킬 이름을 나열해줘.`
+설치 후 `codex` 를 다시 연다(폴더 신뢰 → 선택: `/hooks` 에서 cofa-kit 훅 신뢰). 확인: `파일을 열지 말고, 지금 받은 지침에 있는 cofa-kit 원칙 6개의 제목과 쓸 수 있는 스킬 이름만 말해줘.`
 
 ---
 
@@ -109,7 +117,8 @@ $debug 이 오류의 원인 가설 2~3개를 근거와 함께 내고, 가설을 
 ```
 $delegate <모듈/작업>을 위임 지시서로 만들어 .cofa/tasks/T1.md 에 저장해줘. 수정 가능한 파일, 입출력 계약, 완료 기준 명령, 하지 말 것을 포함해서.
 ```
-새 터미널에서: `codex exec "$(cat .cofa/tasks/T1.md)"`
+먼저 같은 세션에서: `T1 지시서를 서브에이전트에게 맡기고, 그동안 나는 <다른 일>을 하자.`
+서브에이전트가 안 되면 새 터미널에서: `codex exec -s workspace-write -o .cofa/tasks/T1.result.md "$(cat .cofa/tasks/T1.md)"`
 돌아오면:
 ```
 T1 결과를 검증해줘. git diff --stat 으로 허용 파일만 바뀌었는지 보고 완료 기준 명령을 직접 다시 실행해.

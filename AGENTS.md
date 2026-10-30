@@ -11,26 +11,35 @@
 5. **작게, 자주.** 한 번에 한 슬라이스(입력→처리→출력이 도는 가장 작은 단위). 슬라이스마다 실행·테스트 → 커밋.
 6. **토큰을 아낀다.** 필요한 파일만 읽고, 같은 시도를 반복하지 않고, 긴 로그는 필요한 줄만 본다. 보고는 짧게.
 
-## 매 작업의 순서
+## 파일을 바꾸는 작업의 순서
+(질문·검토·조사처럼 파일을 바꾸지 않는 요청은 답만 하고 기록·커밋을 하지 않는다. 사용자가 범위를 정해 주면 그 범위가 이 순서보다 우선한다.)
 1. 관련 파일을 읽고 할 일을 3줄 이내로 말한다(무엇을 · 어떤 파일 · 어떻게 확인).
 2. 구현한다. 요청 범위 밖 파일을 고쳐야 하면 먼저 묻는다.
 3. 검증한다: 테스트·실행 명령을 실제로 돌리고 결과를 그대로 보여준다.
-4. 기록한다: 요구 상태는 `req_upsert`(MCP) 또는 `node .cofa/kit/scripts/kit.mjs req set`, 설계 선택은 `log_decision` 또는 `kit.mjs decision`.
-5. 커밋을 제안한다(메시지: 무엇을 · 왜).
+4. 기록한다: 요구 상태는 `req_upsert` 또는 `kit.mjs req set`, 설계 선택은 `log_decision` 또는 `kit.mjs decision`.
+5. 커밋을 제안한다(메시지: 무엇을 · 왜). 커밋할 때는 이번에 바꾼 파일만 `git add <파일>` 한다. 샌드박스에서 `.git` 쓰기가 막히면(`index.lock: Permission denied`) 승인을 요청해 다시 실행하고, 그래도 안 되면 사용자가 터미널에 칠 `git add … && git commit -m …` 한 줄을 준다.
+
+## 키트 도구
+- MCP 도구(`time_status` `req_upsert` `log_decision` `log_work` `req_list` `submission_check`)가 없거나 실패·승인 거부되면 **다시 시도하지 말고** 같은 기능의 명령을 쓴다: `node .cofa/kit/scripts/kit.mjs <status|req|decision|log|check|env|help>`.
+- `.cofa/kit/` 안의 소스는 읽지 않는다(토큰 낭비). 사용법은 `kit.mjs help` 한 번이면 된다.
 
 ## 보고 형식
 변경 요약(3줄 이내) → 검증 결과(명령과 결과) → 남은 위험·미검증 → 다음 제안 1개.
 
 ## 시간
-- 단계를 바꾸거나 큰 작업을 시작하기 전에 `time_status`(MCP) 또는 `node .cofa/kit/scripts/kit.mjs status` 로 남은 시간을 본다.
+- 단계를 바꾸거나 큰 작업을 시작하기 전에 `time_status` 또는 `kit.mjs status` 로 남은 시간을 본다(훅이 켜져 있으면 프롬프트마다 `[cofa-kit] 경과 …` 가 붙으니 따로 부르지 않는다).
 - 남은 시간이 15분 이하면 새 기능을 시작하지 않는다. 저장·커밋·제출 문서만.
 
 ## 환경
-- 웹 서버는 `0.0.0.0` 에 바인딩하고 포트를 출력한다(플랫폼 Browser 미리보기용).
-- 외부 유료 API·개인 키를 쓰지 않는다. 키·토큰을 파일에 쓰지 않는다. git push 하지 않는다.
+- 웹 서버는 `0.0.0.0` 에 바인딩하고 **1024 이상 포트**를 쓰고 포트를 출력한다(플랫폼 Browser 미리보기용). Vite 는 `server.allowedHosts` 에 미리보기 호스트(예: `.e2b.app`)를 넣는다. 서버는 한 번에 하나만 띄운다(메모리가 작다).
+- 명령이 승인을 요구하면 사용자 승인을 기다린다. `sudo`·샌드박스 끄기·승인 우회 옵션으로 피하지 않는다.
+- 파이썬은 `python3` 로 부른다(`python` 이 없을 수 있다).
+- 테스트·실행 검증은 `node .cofa/kit/scripts/kit.mjs run -- <명령>` 으로 돌려 증거를 남긴다(0건 실행은 자동으로 「돌리지 않음」).
+- 외부 유료 API·개인 키를 쓰지 않는다. 키·토큰을 파일에 쓰지 않는다. git push 하지 않는다. 과제 내용·데이터를 외부 서비스로 보내지 않는다.
+- 개인정보로 보이는 값(이름·연락처·주민번호)은 출력·로그·문서에 그대로 쓰지 않는다.
 - 패키지 설치 전에 이미 있는 것(`kit.mjs env`)으로 되는지 먼저 본다.
 - 플랫폼 설정·감독 관련 프로세스·`~/.codex/config.toml` 은 건드리지 않는다.
 
 ## 스킬
-상황에 맞으면 쓴다: `$kickoff`(시작) `$interview`(담당자 질문) `$plan` `$build-slice` `$debug` `$verify` `$delegate`(긴 구현 병렬) `$data-first-look`(데이터) `$playbook`(과제 유형별 요령) `$explainback`(사후 설명 대비) `$submit`(제출 직전). 복사용 요청문은 `.cofa/kit/prompts/PROMPTS.md`.
+상황에 맞으면 쓴다: `$kickoff`(시작) `$interview`(담당자 질문) `$plan` `$build-slice` `$debug` `$verify` `$delegate`(긴 구현 병렬) `$data-first-look`(데이터) `$playbook`(과제 유형별 요령) `$handoff`(세션 교체) `$explainback`(사후 설명 대비) `$submit`(제출 직전). 복사용 요청문은 `.cofa/kit/prompts/PROMPTS.md`.
 <!-- cofa-kit:end -->

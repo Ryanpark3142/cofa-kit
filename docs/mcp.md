@@ -20,17 +20,20 @@
       "cofa-kit": {
         "command": "node",
         "args": ["/<작업폴더>/.cofa/kit/mcp/server.mjs"],
-        "env": { "COFA_ROOT": "/<작업폴더>" }
+        "env": { "COFA_ROOT": "/<작업폴더>" },
+        "default_tools_approval_mode": "approve"
       }
     }
   }
   ```
+  `default_tools_approval_mode` 가 없으면 도구를 부를 때마다 승인이 필요하다. `codex exec`(비대화형)에서는 승인을 못 받아 호출이 전부 실패한다(codex-cli 0.164 실측: `approve` 는 성공, `auto` 는 실패). 값: `auto` `prompt` `writes` `approve`.
 - **Codex config.toml** 형식이 필요하면:
   ```toml
   [mcp_servers.cofa-kit]
   command = "node"
   args = ["/<작업폴더>/.cofa/kit/mcp/server.mjs"]
   env = { COFA_ROOT = "/<작업폴더>" }
+  default_tools_approval_mode = "approve"
   ```
   시험 환경에서는 `~/.codex/config.toml` 을 직접 고치지 말고 MCP 탭을 쓴다.
 - **플러그인으로 설치**하면 `.mcp.json` 이 자동 등록된다(Codex 버전에 따라 다름).
@@ -42,7 +45,7 @@
 | 서버 | 용도 | 등록 예 |
 |---|---|---|
 | Context7 | 라이브러리 최신 문서 검색 | `"context7": {"command": "npx", "args": ["-y", "@upstash/context7-mcp"]}` |
-| Playwright | 브라우저로 웹 결과물 자동 확인 | `"playwright": {"command": "npx", "args": ["-y", "@playwright/mcp@latest", "--headless"]}` |
+| ~~Playwright~~ | **시험에서는 쓰지 않는다.** 「Computer Use(자동 조작) 전 단계 금지」 와 겹친다고 해석될 수 있고(원문에 Playwright 를 직접 가리키는 문장은 없음), 메모리도 작다. 웹 결과물은 `curl` + 사람이 Browser 탭에서 확인 | - |
 
-- 둘 다 첫 실행에 npm 다운로드가 필요하다. 사전 체험에서 `npm ping` 이 되는지 먼저 본다(`kit.mjs env`).
-- Playwright 는 브라우저 설치가 필요해 메모리를 많이 쓴다. 우측 상단 RAM 을 보고, 부족하면 `curl` 확인 + 사람이 Browser 탭에서 확인하는 쪽이 낫다.
+- **외부 전송 주의**: Context7 는 질의를 외부 서버로 보낸다. 라이브러리 이름·API 질문만 보내고 과제 지시서·데이터·코드는 넣지 않는다. 시험에서는 「문제·파일·결과물 외부 전송 금지」 가 우선이다. 확신이 없으면 쓰지 않는다.
+- Context7 는 첫 실행에 npm 다운로드가 필요하다. 사전 체험에서 `node .cofa/kit/scripts/kit.mjs env --net` 으로 npm 접근을 먼저 본다.

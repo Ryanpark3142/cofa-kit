@@ -5,10 +5,10 @@
 ## 사전 체험(15분, 1회)에서 확인할 것
 1. 감독 연결: 웹캠 · 전체 화면 공유 · 휴대폰 앱 · 충전선
 2. 터미널: `node --version`, `python3 --version`, `git --version`
-3. clone 되는지: `git clone --depth 1 https://github.com/<아이디>/<저장소> /tmp/kit`
-4. 설치: 빈 폴더에서 `bash /tmp/kit/install.sh` → 환경 요약이 나오는지
-5. `codex` → `/status`, `/model` 목록·추론 강도 확인 → `적용된 AGENTS.md 규칙을 3줄로 요약하고 스킬 이름을 나열해줘`
-6. (선택) MCP 탭에 install.sh 가 출력한 JSON 추가 → Codex 에서 `time_status 도구를 호출해줘`
+3. 설치: 체험 작업 폴더에서 `git clone --depth 1 https://github.com/Ryanpark3142/cofa-kit /tmp/kit && bash /tmp/kit/install.sh` → 환경 요약이 나오는지. clone 이 막히면 codeload tar.gz 대안(README)
+4. `codex` → 폴더 신뢰 → `/status`, `/model` 목록·추론 강도 확인 → `파일을 열지 말고, 지금 받은 지침에 있는 cofa-kit 원칙 6개의 제목과 쓸 수 있는 스킬 이름만 말해줘` (파일을 읽고 답하면 로딩 확인이 안 되므로 「열지 말고」 가 중요)
+5. `/hooks` → cofa-kit 훅 2개 신뢰 → 아무 질문이나 보내고 답에 `[cofa-kit] 경과 …` 를 받았는지 물어본다
+6. (선택) MCP 탭에 install.sh 가 출력한 JSON 추가 → Codex 에서 `time_status 도구를 호출해줘` → 승인 창 없이 되는지
 7. 서버 0.0.0.0 실행 → Browser 미리보기
 8. 체험 종료 → 예시 서술형 화면에서 타이핑 감각
 
@@ -21,7 +21,15 @@
 | 30~130 | 구현 | 슬라이스마다 구현→검증→커밋. 긴 독립 작업은 위임. 100분에 필수 미완이면 가산 기능 버림 | `$build-slice` `$delegate` `$debug` |
 | 130~155 | 검증 | 요구별 증거, 엣지 케이스, 교차 확인 | `$verify` |
 | 155~170 | 정리 | 제출 문서, 사후 설명 대비, 핵심 코드 다시 읽기 | `$submit` `$explainback` |
-| 170~ | 제출 | 저장 상태 확인 → 「제출하고 문제풀기」 | |
+| 170~ | 제출 | 저장 상태 확인 → 「제출하고 문제풀기」(미리보기, 일부 파일만 보임) → 「제출물 확정하고 문제풀기」(확정 뒤 수정 불가) | |
+
+## 공개 후기에서 본 환경 (다른 응시자 저장소, 사전 체험 관찰. 본시험과 다를 수 있음)
+- 작업 폴더는 홈(`/home/user`)이고 홈 자체가 git 저장소. 이때 install.sh 는 `~/.codex` 보호를 위해 훅을 설치하지 않는다.
+- `python` 없음, `python3` 있음. Node 22·git 2.39 계열. 메모리 약 1.6GB.
+- 서버 실행에 승인 창이 뜰 수 있고, 1024 미만 포트는 거부.
+- 공개 저장소 clone 은 됨(승인이 필요할 수 있음). git push 는 막힘.
+- 체험 서술형: 「만든 것이 무엇을 하며 어떻게 확인했나」, 「AI 제안을 어떻게 확인·수정했나」.
+- 응시 메신저에는 Cofa Helper 없이 과제 담당자만 있을 수 있다(출처 불명확).
 
 ## 모델 운용
 codex-cli 0.164 `codex debug models` 의 설명: GPT-6.1-Sol 「Latest workhorse model for coding and everyday work」, GPT-5.6-Terra 「Older balanced model for straightforward work」, GPT-6-Luna 「Fast and affordable model for easier tasks」. 추론 강도 low~xhigh(Sol·Terra 는 max·ultra 까지), 기본 medium.
