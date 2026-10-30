@@ -43,7 +43,7 @@ mkdir -p /tmp/kit && curl -fsSL https://codeload.github.com/Ryanpark3142/cofa-ki
 설치 스크립트가 하는 일(사용자 파일은 덮어쓰지 않음, `~/.codex` 는 건드리지 않음, 외부 접속 없음):
 - 먼저 `node` 18 이상·`git` 을 확인하고, 없으면 아무것도 바꾸지 않고 멈춘다
 - `AGENTS.md` 생성(이미 있으면 뒤에 덧붙임 — 과제 지침이 우선)
-- `.agents/skills/` 에 스킬 11개 복사(Codex 가 저장소 스킬로 인식)
+- `.agents/skills/` 에 스킬 13개 복사(Codex 가 저장소 스킬로 인식)
 - `PLAN.md` `DECISIONS.md` `WORKLOG.md` 양식 생성
 - `.codex/hooks.json`(프로젝트 훅) 생성 — `/hooks` 에서 신뢰해야 동작
 - 도구 사본을 `.cofa/kit/` 에 둠(`/tmp` 는 환경이 일시정지되면 사라질 수 있어서), `.gitignore` 에 추가
@@ -87,8 +87,12 @@ mkdir -p /tmp/kit && curl -fsSL https://codeload.github.com/Ryanpark3142/cofa-ki
 - MCP 서버 프로토콜(버전 협상·도구 목록·호출·오류·ping), `kit.mjs` 전 명령, `profile.mjs`(cp949·따옴표·날짜 표기 섞임·개인정보 가림)
 - Codex(독립 검토)와 Claude 교차검토 지적 반영
 
+시험 환경 사전 체험(2026-10-31)에서 확인한 것:
+- Codex 한 문장 설치 성공(clone 네트워크 승인·install.sh 실행 승인 각 1번). 작업 폴더가 홈이라 훅은 설계대로 설치되지 않음
+- Codex 가 AGENTS.md·스킬 13개·양식·`kit.mjs` 를 인식. 자세한 관찰은 `docs/exam-day.md` 「사전 체험에서 직접 본 것」
+
 확인하지 못한 것:
-- 시험 환경(리눅스, 고정 Codex 버전)에서의 설치·스킬 인식·MCP 탭 등록·`/hooks` 신뢰. 사전 체험에서 확인한다(`docs/exam-day.md`). 무엇이 안 돼도 `AGENTS.md` + `kit.mjs` 만으로 모든 기능을 쓸 수 있다.
+- 시험 환경에서의 MCP 탭 등록(체험 때 탭은 비어 있었고 등록하지 않음). 무엇이 안 돼도 `AGENTS.md` + `kit.mjs` 만으로 모든 기능을 쓸 수 있다.
 - 플러그인 MCP 의 `${PLUGIN_ROOT}` 치환(플러그인은 시험장에서 쓰지 않음).
 
 ## 라이선스
