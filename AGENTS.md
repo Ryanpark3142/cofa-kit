@@ -41,5 +41,5 @@
 - 플랫폼 설정·감독 관련 프로세스·`~/.codex/config.toml` 은 건드리지 않는다.
 
 ## 스킬
-상황에 맞으면 쓴다: `$kickoff`(시작) `$interview`(담당자 질문) `$plan` `$build-slice` `$debug` `$verify` `$delegate`(긴 구현 병렬) `$data-first-look`(데이터) `$playbook`(과제 유형별 요령) `$handoff`(세션 교체) `$explainback`(사후 설명 대비) `$submit`(제출 직전). 복사용 요청문은 `.cofa/kit/prompts/PROMPTS.md`.
+사용자가 스킬 이름 없이 "다음"·"이제 뭐 해"·"계속" 이라고 하면 `$next` 로 단계를 골라 진행한다. 상황에 맞으면 쓴다: `$kickoff`(시작) `$interview`(담당자 질문) `$plan` `$build-slice` `$debug` `$verify` `$delegate`(긴 구현 병렬) `$data-first-look`(데이터) `$playbook`(과제 유형별 요령) `$handoff`(세션 교체) `$explainback`(사후 설명 대비) `$submit`(제출 직전). 복사용 요청문은 `.cofa/kit/prompts/PROMPTS.md`.
 <!-- cofa-kit:end -->

@@ -7,7 +7,7 @@
 | 구성 | 내용 |
 |---|---|
 | `AGENTS.md` | Codex 작업 규칙(주도권·범위 통제·증거 기반 검증·시간·보고 형식) |
-| `skills/` | 12개: `kickoff` `interview` `plan` `build-slice` `debug` `verify` `delegate` `data-first-look` `playbook` `handoff` `explainback` `submit` |
+| `skills/` | 13개: `next`(「다음」 만 치면 단계를 골라 진행) `kickoff` `interview` `plan` `build-slice` `debug` `verify` `delegate` `data-first-look` `playbook` `handoff` `explainback` `submit` |
 | `skills/playbook/references/` | 과제 유형별 요령(웹·데이터·API·기존 코드·자동화·LLM 기능·문서) + 반도체 용어 |
 | `prompts/PROMPTS.md` | 단계별 복사용 요청문, 담당자 질문 예시, 서술형 답변 틀 |
 | `mcp/server.mjs` | 의존성 없는 MCP 서버: 시간 상태·작업/결정 기록·요구사항 추적·제출 점검 |
