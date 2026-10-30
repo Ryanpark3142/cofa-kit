@@ -118,6 +118,13 @@ if ! grep -qxF '.cofa/kit/' .gitignore 2>/dev/null; then
   echo '.cofa/kit/' >> .gitignore
   ADDED+=(.gitignore)
 fi
+# 키트를 작업 폴더 안에 받아 설치한 경우(예: Codex 가 ./cofa-kit 에 clone): 제출물에 섞이지 않게 git 에서 뺀다
+KIT_REL=""
+case "$KIT/" in "$DEST"/*) KIT_REL="${KIT#"$DEST"/}" ;; esac
+if [ -n "$KIT_REL" ]; then
+  grep -qxF "$KIT_REL/" .gitignore || { echo "$KIT_REL/" >> .gitignore; ADDED+=(.gitignore); }
+  say "키트 원본이 작업 폴더 안($KIT_REL/)에 있어 .gitignore 에 넣었습니다. 도구는 .cofa/kit 에 복사됐으니 지워도 됩니다: rm -rf \"$KIT_REL\""
+fi
 
 # 7) 환경 확인(외부 접속 없음)
 say "실행 환경"

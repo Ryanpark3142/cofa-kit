@@ -16,9 +16,15 @@
 
 **[나]** 「과제 시작」 → 휴대폰 거치·신분증 확인을 마친다. README 를 열어 두기만 하고 아직 읽지 않는다.
 
-**[터미널]**
+**[터미널]** `codex` 를 열고 **[Codex]** 에 한 문장(외울 것은 주소 `Ryanpark3142/cofa-kit` 하나):
+```
+github.com/Ryanpark3142/cofa-kit 를 /tmp/kit 에 받아서 README 대로 설치해줘
+```
+인터넷 접근 승인 창이 뜨면 승인한다. 끝나면 `codex` 를 닫고 다시 연다(규칙·스킬은 세션 시작 때 읽힘).
+
+Codex 가 엉뚱하면 **[터미널]** 에 직접:
 ```bash
-git clone --depth 1 https://github.com/Ryanpark3142/cofa-kit /tmp/kit && bash /tmp/kit/install.sh
+git clone https://github.com/Ryanpark3142/cofa-kit /tmp/kit && bash /tmp/kit/install.sh
 ```
 - clone 이 막히면:
   ```bash

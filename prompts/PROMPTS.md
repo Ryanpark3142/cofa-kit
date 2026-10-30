@@ -15,9 +15,9 @@ git clone 이 막히면(HTTPS 다운로드만 될 때):
 ```bash
 mkdir -p /tmp/kit && curl -fsSL https://codeload.github.com/Ryanpark3142/cofa-kit/tar.gz/refs/heads/main | tar xz -C /tmp/kit --strip-components=1 && bash /tmp/kit/install.sh
 ```
-Codex 에 시킬 때:
+Codex 에 시킬 때(실측: 이 한 문장으로 설치까지 됨):
 ```
-https://github.com/Ryanpark3142/cofa-kit 를 /tmp/kit 에 clone 하고 작업 폴더에서 bash /tmp/kit/install.sh 를 실행해줘. 출력의 실행 환경 요약을 3줄로.
+github.com/Ryanpark3142/cofa-kit 를 /tmp/kit 에 받아서 README 대로 설치해줘
 ```
 
 설치 후 `codex` 를 다시 연다(폴더 신뢰 → 선택: `/hooks` 에서 cofa-kit 훅 신뢰). 확인: `파일을 열지 말고, 지금 받은 지침에 있는 cofa-kit 원칙 6개의 제목과 쓸 수 있는 스킬 이름만 말해줘.`
