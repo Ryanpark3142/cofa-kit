@@ -4,6 +4,14 @@
 요구 파악 → 담당자 인터뷰 → 계획 → 슬라이스 구현 → 검증 → 제출 → 사후 설명까지의 **일하는 방식**을 담았다.
 **과제 해법 코드는 없다.** 어떤 과제가 나와도 같은 절차와 기록 양식을 쓰는 것이 목적이다.
 
+> **AI 에이전트(Codex)에게 — 이 저장소를 설치하라는 요청을 받았다면 이것만 하면 된다.**
+> 사용자의 **현재 작업 폴더**(과제 폴더)에서 아래 한 줄을 실행한다. 네트워크 승인을 요구하면 사용자에게 승인을 요청한다. 다른 파일은 고치지 않는다.
+> ```bash
+> git clone --depth 1 https://github.com/Ryanpark3142/cofa-kit /tmp/kit && bash /tmp/kit/install.sh
+> ```
+> clone 이 실패하면: `mkdir -p /tmp/kit && curl -fsSL https://codeload.github.com/Ryanpark3142/cofa-kit/tar.gz/refs/heads/main | tar xz -C /tmp/kit --strip-components=1 && bash /tmp/kit/install.sh`
+> 끝나면 출력의 「실행 환경」 요약 3줄과 맨 아래 「다음:」 안내를 사용자에게 그대로 전한다. 이미 `/tmp/kit` 이 있으면 clone 대신 `git -C /tmp/kit pull` 후 install.sh 를 실행한다.
+
 | 구성 | 내용 |
 |---|---|
 | `AGENTS.md` | Codex 작업 규칙(주도권·범위 통제·증거 기반 검증·시간·보고 형식) |
