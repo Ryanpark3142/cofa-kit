@@ -67,7 +67,7 @@ const dateKey = (s) => {
   const m = /^(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})(?:[ T](\d{1,2}):(\d{2})(?::(\d{2}))?)?/.exec(s.trim());
   return m ? Number(m[1]) * 1e10 + Number(m[2]) * 1e8 + Number(m[3]) * 1e6 + Number(m[4] || 0) * 1e4 + Number(m[5] || 0) * 100 + Number(m[6] || 0) : NaN;
 };
-const PII_NAME = /(name|이름|성명|phone|tel|전화|휴대|email|e-mail|메일|주민|ssn|addr|주소|birth|생년)/i;
+const PII_NAME = /(name|이름|성명|phone|tel|mobile|contact|전화|휴대|연락|email|e-mail|메일|주민|ssn|addr|주소|birth|생년)/i;
 const PII_VALUE = /(^[^@\s]+@[^@\s]+\.[a-z]{2,}$)|(^0\d{1,2}-?\d{3,4}-?\d{4}$)|(^\d{6}-?[1-4]\d{6}$)/i;
 
 const it = parse(text);
@@ -88,7 +88,9 @@ for (const row of it) {
       return c.nulls++;
     }
     if (v !== v.trim()) c.ws++;
-    if (k === 'text' && PII_VALUE.test(v.trim())) c.piiVals++;
+    // 01012345678 처럼 숫자로 읽힌 전화번호와, 엑셀을 거치며 앞의 0 이 빠진 휴대폰 번호(1012345678)도 잡는다
+    if ((k === 'text' || k === 'int') && PII_VALUE.test(v.trim())) c.piiVals++;
+    else if (k === 'int' && /^1[016-9]\d{7,8}$/.test(v.trim())) c.piiVals++;
     if (k === 'text' && /^[가-힣]{2,4}$/.test(v.trim())) c.krNames = (c.krNames || 0) + 1;
     if (c.uniq.size < 50000) c.uniq.set(v, (c.uniq.get(v) || 0) + 1);
     if (k === 'int' || k === 'float') {
@@ -117,11 +119,12 @@ for (const c of cols) {
   const kinds = Object.entries(c.kinds).filter(([k]) => k !== 'null').sort((a, b) => b[1] - a[1]);
   const kindStr = kinds.map(([k, v]) => `${k}(${v})`).join(' ') || '-';
   const nonNull = n - c.nulls;
-  const range = c.min !== Infinity ? `${c.min} ~ ${c.max}` : c.minS ? `${c.minS} ~ ${c.maxS}` : '-';
+  let range = c.min !== Infinity ? `${c.min} ~ ${c.max}` : c.minS ? `${c.minS} ~ ${c.maxS}` : '-';
   // 2~4글자 한글 값이 대부분이고 값이 다양하면 사람 이름일 수 있다(설비명 등이 함께 가려져도 손해는 작다)
   const krNameLike = nonNull >= 3 && (c.krNames || 0) / nonNull >= 0.8 && c.uniq.size >= nonNull * 0.5;
   const pii = PII_NAME.test(c.name) || c.piiVals > 0 || krNameLike;
-  // 개인정보 의심 열은 값 자체를 출력하지 않는다(대화·로그에 남지 않게)
+  // 개인정보 의심 열은 값 자체를 출력하지 않는다(대화·로그에 남지 않게). 범위(최솟값~최댓값)도 실제 값이므로 가린다
+  if (pii && range !== '-') range = '(가림)';
   const top = pii
     ? '(개인정보 의심 — 값 가림)'
     : [...c.uniq.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3).map(([v, k]) => `${v.slice(0, 20)}(${k})`).join(', ');
