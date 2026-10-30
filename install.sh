@@ -1,10 +1,18 @@
 #!/usr/bin/env bash
-# 과제 작업 폴더에 cofa-kit(규칙·스킬·양식·도구·훅)을 설치한다. 사용자 파일은 덮어쓰지 않는다(.cofa/kit 도구 사본만 매번 새로 받는다).
-# 사용: git clone --depth 1 https://github.com/Ryanpark3142/cofa-kit /tmp/kit && bash /tmp/kit/install.sh [작업폴더(기본: 현재 폴더)]
+# 과제 작업 폴더에 cofa-kit(규칙·스킬·양식·도구)을 설치한다. 사용자 파일은 덮어쓰지 않는다(.cofa/kit 도구 사본만 매번 새로 받는다).
+# 사용: git clone --depth 1 https://github.com/Ryanpark3142/cofa-kit /tmp/kit && bash /tmp/kit/install.sh [작업폴더(기본: 현재 폴더)] [--hooks]
 set -euo pipefail
 
 KIT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DEST="$(cd "${1:-$PWD}" && pwd)"
+DEST_ARG=""
+WANT_HOOKS=0
+for a in "$@"; do
+  case "$a" in
+    --hooks) WANT_HOOKS=1 ;;
+    *) DEST_ARG="$a" ;;
+  esac
+done
+DEST="$(cd "${DEST_ARG:-$PWD}" && pwd)"
 say() { printf '\033[1m[cofa-kit]\033[0m %s\n' "$*"; }
 
 if [ "$KIT" = "$DEST" ]; then
@@ -54,6 +62,11 @@ add_ignore() {
 rm -rf .cofa/kit
 mkdir -p .cofa/kit
 cp -R "$KIT/lib" "$KIT/mcp" "$KIT/hooks" "$KIT/scripts" "$KIT/prompts" "$KIT/templates" "$KIT/docs" .cofa/kit/
+# 도구 사본·잠금·임시 파일은 커밋하지 않는다(기록 파일 requirements.json·evidence·tasks 는 커밋한다)
+if [ ! -e .cofa/.gitignore ]; then
+  printf 'kit/\n*.lock\ntmp-*\n' > .cofa/.gitignore
+  ADDED+=(.cofa/.gitignore)
+fi
 say "도구 → .cofa/kit/"
 
 # 2) 작업 규칙: 과제가 이미 AGENTS.md 를 줬으면 뒤에 덧붙인다(한 번만)
@@ -100,13 +113,15 @@ for f in PLAN.md DECISIONS.md WORKLOG.md; do
 done
 say "양식 → PLAN.md DECISIONS.md WORKLOG.md (SUBMISSION.md 는 \$submit 때 만듭니다)"
 
-# 5) 프로젝트 훅(선택 기능): Codex 에서 /hooks 로 신뢰해야 동작한다. 이미 있으면 건드리지 않는다
-# 작업 폴더가 홈이면 ./.codex 가 곧 ~/.codex(플랫폼 관리 설정)이므로 절대 쓰지 않는다
+# 5) 프로젝트 훅(선택, --hooks 일 때만): /hooks 에서 신뢰하면 Codex 가 그 신뢰 기록을 ~/.codex/config.toml 에 쓴다
+#    (codex-cli 0.164 의 [hooks.state] 항목). 시험 환경은 그 파일이 플랫폼 관리 설정이라 기본으로는 설치하지 않는다.
+#    작업 폴더가 홈이면 ./.codex 가 곧 ~/.codex 이므로 --hooks 여도 쓰지 않는다
 CODEX_HOME_DIR="$(cd "${CODEX_HOME:-$HOME/.codex}" 2>/dev/null && pwd || echo "${CODEX_HOME:-$HOME/.codex}")"
-HOOKS_STEP="  2) (선택) /hooks 에서 cofa-kit 훅 2개를 신뢰한다."
-if [ "$DEST/.codex" = "$CODEX_HOME_DIR" ] || [ "$DEST" = "$(cd "$HOME" && pwd)" ]; then
-  HOOKS_STEP="  2) (훅 없음: 작업 폴더가 홈) 시간은 node .cofa/kit/scripts/kit.mjs status 로 본다."
-  say "작업 폴더가 홈이라 훅을 설치하지 않습니다(~/.codex 보호). 시간 안내는 kit.mjs status 로 봅니다."
+HOOKS_STEP=""
+if [ "$WANT_HOOKS" != 1 ]; then
+  :
+elif [ "$DEST/.codex" = "$CODEX_HOME_DIR" ] || [ "$DEST" = "$(cd "$HOME" && pwd)" ]; then
+  say "작업 폴더가 홈이라 훅을 설치하지 않습니다(~/.codex 보호). 시간은 kit.mjs status 로 봅니다."
 elif [ ! -e .codex/hooks.json ]; then
   mkdir -p .codex
   HOOK="node \\\"$DEST/.cofa/kit/hooks/context.mjs\\\""
@@ -120,7 +135,8 @@ elif [ ! -e .codex/hooks.json ]; then
 }
 EOF
   ADDED+=(.codex/hooks.json)
-  say "훅 → .codex/hooks.json (codex 에서 /hooks 로 신뢰하면 시간 안내가 자동으로 붙습니다)"
+  HOOKS_STEP="  4) (훅) codex 에서 /hooks → cofa-kit 훅 2개 신뢰(신뢰 기록은 ~/.codex/config.toml 에 남는다)"
+  say "훅 → .codex/hooks.json"
 else
   say ".codex/hooks.json 이 이미 있어 훅은 설치하지 않았습니다."
 fi
@@ -130,7 +146,6 @@ if [ ! -e .cofa/started_at ]; then
   node .cofa/kit/scripts/kit.mjs start >/dev/null
   ADDED+=(.cofa/started_at)
 fi
-add_ignore '.cofa/kit/' && ADDED+=(.gitignore)
 # 키트를 작업 폴더 안에 받아 설치한 경우(예: Codex 가 ./cofa-kit 에 clone): 제출물에 섞이지 않게 git 에서 뺀다
 KIT_REL=""
 case "$KIT/" in "$DEST"/*) KIT_REL="${KIT#"$DEST"/}" ;; esac
@@ -145,13 +160,16 @@ node .cofa/kit/scripts/kit.mjs env | sed 's/^/    /'
 echo
 node .cofa/kit/scripts/kit.mjs status | sed 's/^/    /'
 
-# 8) 설치 커밋: 이번에 만든 경로만
-if [ ${#ADDED[@]} -gt 0 ]; then
-  git add -- "${ADDED[@]}"
-  if git commit -q -m "chore: cofa-kit 작업 규칙·스킬·양식 설치" -- "${ADDED[@]}"; then
+# 8) 설치 커밋: 이번에 만든 경로만. 플랫폼 .gitignore 가 무시하는 경로(예: 숨김 폴더)는 빼야 git add 가 통째로 실패하지 않는다
+COMMIT=()
+for f in ${ADDED[@]+"${ADDED[@]}"}; do
+  git check-ignore -q -- "$f" 2>/dev/null || COMMIT+=("$f")
+done
+if [ ${#COMMIT[@]} -gt 0 ]; then
+  if git add -- "${COMMIT[@]}" && git commit -q -m "chore: cofa-kit 작업 규칙·스킬·양식 설치" -- "${COMMIT[@]}"; then
     say "커밋 완료(설치한 파일만)"
   else
-    say "커밋 실패 — git status 를 확인하세요."
+    say "커밋 실패 — git status 를 확인하세요(설치 자체는 끝났습니다)."
   fi
 else
   say "새로 설치한 파일이 없어 커밋하지 않았습니다."
@@ -159,22 +177,11 @@ fi
 
 cat <<EOF
 
-[cofa-kit] MCP(선택): IDE 의 MCP 탭 JSON 에 아래 블록을 추가하고 저장한 뒤 codex 를 다시 여세요.
-{
-  "mcpServers": {
-    "cofa-kit": {
-      "command": "node",
-      "args": ["$DEST/.cofa/kit/mcp/server.mjs"],
-      "env": { "COFA_ROOT": "$DEST" },
-      "default_tools_approval_mode": "approve"
-    }
-  }
-}
-MCP 가 안 되거나 승인 창이 계속 뜨면 MCP 는 빼고 같은 기능을 명령으로: node .cofa/kit/scripts/kit.mjs help
-
 다음:
-  1) 지금 codex 를 끄고(Ctrl+C 두 번) 승인 창 없이 쓰려면 이렇게 다시 연다: codex --dangerously-bypass-approvals-and-sandbox
-     거부되면 그냥 codex 를 열고 /permissions → Full Access 를 고른다. 폴더 신뢰를 물으면 신뢰한다.
+  1) Codex 를 승인 창 없이 연다(이미 열려 있으면 Ctrl+C 두 번으로 끄고 다시): codex --yolo
+     (--yolo = --dangerously-bypass-approvals-and-sandbox. 거부되면 codex 를 열고 /permissions → Full Access)
+  2) 첫 입력: \$kickoff   그다음부터는 「다음」 만 쳐도 단계를 골라 진행한다.
+     과제 시작 시각이 설치 시각과 다르면: node .cofa/kit/scripts/kit.mjs start HH:MM
+  3) 탭 나누기(메인·작업·검증/설명)와 입력 문장 한 장: node .cofa/kit/scripts/kit.mjs card
 $HOOKS_STEP
-  3) \$kickoff 로 시작한다. 과제 시작 시각이 설치 시각과 다르면: node .cofa/kit/scripts/kit.mjs start HH:MM
 EOF
