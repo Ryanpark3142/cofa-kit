@@ -30,7 +30,8 @@
 - 기본 모델 표시 `GPT-6.1-Sol default`. `npm i -g @openai/codex` 는 EACCES 로 막힌다(Codex 업데이트 불가, 시도하지 않는다).
 - Codex 샌드박스에서 외부 주소는 DNS 부터 안 된다(`curl developers.openai.com` → exit 6). 문서 조회에 기대지 않는다.
 - Codex 가 확인한 제한: `~/.codex/config.toml` 수정 금지, **관리 포트 8090·8081·2222 사용 금지**, 앱은 다른 포트에 `0.0.0.0`, git push 금지.
-- 승인 창에는 `2. Yes, and don't ask again for commands that start with … (p)` 가 있다. 서버 실행·테스트처럼 반복되는 명령은 처음 한 번 `p` 로 승인하면 이후 창이 줄어든다. 승인 모드 전체를 바꾸는 방법(`--ask-for-approval`·`--sandbox`·`config.toml`)은 쓰지 않는다.
+- 승인 창에는 `2. Yes, and don't ask again for commands that start with … (p)` 가 있다. 서버 실행·테스트처럼 반복되는 명령은 처음 한 번 `p` 로 승인하면 이후 창이 줄어든다.
+- 승인을 통째로 줄이는 방법(codex-cli 0.164 바이너리·`--help` 기준, 시험 환경에서는 미확인): 세션 안에서 `/permissions` → `Full Access`(승인 없이 작업 폴더 밖 편집·인터넷), 또는 Codex 를 다시 열 때 `codex --dangerously-bypass-approvals-and-sandbox`(별칭 `--yolo`)·`codex -a never -s workspace-write`·`codex --approve-for-me`. 실행 옵션은 그 실행에만 적용되고 `config.toml` 을 고치지 않는다. 플랫폼이 막아 두었으면 거부된다.
 - Cofa Helper 는 플랫폼 사용법만 답하고 과제 풀이·코드 리뷰는 하지 않는다.
 - 확인 문제: 2문항, 문항당 약 3분 타이머, 복사·붙여넣기 불가, 시간이 끝나면 자동 확정, 이전 문항으로 못 돌아감. 1번 「체험 과제에서 구현한 서비스의 핵심 동작과 이를 확인한 방법을 설명해 주세요.」
 - 상단 자원 표시는 `558M/16G`(공개 후기의 1.6GB 와 다름).
