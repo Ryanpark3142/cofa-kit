@@ -24,7 +24,7 @@
 | `templates/` | PLAN · DECISIONS · WORKLOG · SUBMISSION 양식 |
 | `docs/` | 당일 시나리오·운영표·MCP 등록 방법 |
 | `mcp/server.mjs` `hooks/` | 선택 기능: kit.mjs 와 같은 기능의 MCP 서버, 시간 알림 훅(`--hooks`) |
-| `tests/kit-test.sh` | 키트 자체 시험(설치·동시 실행·증거·커밋 격리·점검, 80개 항목). 작업 폴더에는 복사되지 않는다 |
+| `tests/kit-test.sh` | 키트 자체 시험(설치·동시 실행·증거·커밋 격리·점검, 83개 항목). 작업 폴더에는 복사되지 않는다 |
 
 필요한 것: `bash`, `git`, `node`(18 이상). 외부 패키지 설치 없음.
 
@@ -93,7 +93,7 @@ mkdir -p /tmp/kit && curl -fsSL https://codeload.github.com/Ryanpark3142/cofa-ki
 
 ## 확인 상태
 로컬(Windows Git Bash, Node 25, codex-cli 0.164.0, 모델 gpt-6.1-sol)에서 확인한 것:
-- `tests/kit-test.sh` 80개 항목 통과: 설치·재설치, 시작 시각 보호, 요구 20개 동시 등록(유실·중복 0), 실행 10개 동시(증거 번호 겹침 0), 0건 실행(pytest·node --test·go test)·시간 초과 판정, 작업 파일·겹침 경고, 경로 지정 커밋(다른 탭이 staged 한 파일 제외)·`index.lock` 재시도, 문서 커밋·산출물 생성에는 「재검증 필요」 오경보 없음, 숨김 폴더 비밀값 무시, 하위 git 저장소, 플랫폼 `.gitignore` 가 숨김 폴더를 무시할 때, MCP
+- `tests/kit-test.sh` 83개 항목 통과: 설치·재설치, 시작 시각 보호, 요구 20개 동시 등록(유실·중복 0), 실행 10개 동시(증거 번호 겹침 0), 0건 실행(pytest·node --test·go test)·시간 초과 판정, 작업 파일·겹침 경고, 경로 지정 커밋(다른 탭이 staged 한 파일 제외)·`index.lock` 재시도, 문서 커밋·산출물 생성에는 「재검증 필요」 오경보 없음, 숨김 폴더 비밀값 무시, 하위 git 저장소, 플랫폼 `.gitignore` 가 숨김 폴더를 무시할 때, MCP
 - Codex 실측(샌드박스 workspace-write): `$kickoff`(요구 등록·데이터 점검) → 담당자 답 반영·`$plan`·`$delegate`(작업 파일에 손계산 기대값) → `$build-slice` 2회 → **작업 탭 `$worker T1` 과 검증 탭 `$check` 동시 실행**(증거·요구 기록 충돌 없음, 검증 탭이 84.95%/85% 경계를 독립 계산으로 확인) → `다음` 이 「작업 완료 → 메인 재검증」 을 골라 처리 → `$submit`
 - 이 PC 의 Codex 샌드박스는 `.git` 쓰기를 막아 Codex 의 커밋은 실패했고, 키트가 「사용자가 터미널에서 같은 명령」 으로 안내하는 것까지 확인했다(시험장은 `codex --yolo` 라 해당 없음)
 - `codex debug prompt-input` 으로 AGENTS.md 블록과 스킬 16개가 모델 입력에 들어가는 것
