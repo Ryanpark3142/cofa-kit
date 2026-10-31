@@ -54,4 +54,5 @@
 
 ## 스킬
 「다음」「이제 뭐 해」「계속」 이면 `$next` 로 단계를 골라 진행한다. 메인: `$kickoff`(시작) `$interview`(담당자 질문) `$data-first-look` `$playbook` `$plan` `$build-slice` `$debug` `$verify` `$delegate`(다른 탭에 나누기) `$handoff`(세션 교체) `$submit`(제출). 다른 탭: `$worker T<n>`(맡은 작업) `$check`(독립 검증) `$explain`(이해 안 갈 때) `$explainback`(사후 설명 대비). 복사용 요청문은 `.cofa/kit/prompts/PROMPTS.md`.
+키트 사용법·탭 나누기·막혔을 때를 물으면 `kit.mjs card` 를 실행해 그 내용으로 답한다. 지금 단계에 맞는 부분부터 화면 한 장 안으로 쓰고, 새 탭은 터미널 `+` → `codex --yolo` 로 안내한다.
 <!-- cofa-kit:end -->
