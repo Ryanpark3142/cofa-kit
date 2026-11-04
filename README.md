@@ -66,7 +66,7 @@ mkdir -p /tmp/kit && curl -fsSL https://codeload.github.com/Ryanpark3142/cofa-ki
 |---|---|---|
 | 1 메인 | 파악·담당자 질문·계획·통합·제출 | `$kickoff` → `다음` |
 | 2 작업 | 메인이 `$delegate` 로 만든 작업 하나(파일이 안 겹치는 슬라이스) | `$worker T1` |
-| 3 검증·공부 | 구현을 기다리는 동안 독립 검증·코드 이해·설명 연습 | `$check` · `$explain`(알아서 골라 설명, 이어 듣기는 `ㄱ`) · `$explainback` |
+| 3 검증·공부 | 시작부터 끝까지 설명 듣기, 독립 검증, 설명 연습 | `$explain`(과제 → 계획 → 단계별 → 전체 정리, 이어 듣기는 `ㄱ`, 궁금하면 그냥 질문) · `$check` · `$explainback` |
 
 섞이지 않게 하는 장치:
 - **작업 파일** `.cofa/tasks/T<n>.md`: 수정 가능한 파일·완료 기준 명령·입출력 계약. 파일이 겹치면 `task new` 가 경고한다
@@ -82,7 +82,7 @@ mkdir -p /tmp/kit && curl -fsSL https://codeload.github.com/Ryanpark3142/cofa-ki
 |---|---|---|
 | 0~15 | 지시서 정독, 요구 등록, 담당자에게 작고 구체적인 질문 (`$kickoff` `$interview`) | |
 | 15~30 | 설계안 비교 → 선택 → 슬라이스(바꿀 파일·검증 방법) → PLAN.md (`$plan`) | |
-| 30~130 | 슬라이스마다 구현 → 검증 → 커밋 (`$build-slice`), 나눌 수 있는 것은 `$delegate` | `$worker T<n>` · `$explain` |
+| 30~130 | 슬라이스마다 구현 → 검증 → 커밋 (`$build-slice`), 나눌 수 있는 것은 `$delegate` | `$worker T<n>` · 슬라이스마다 탭3 `ㄱ` |
 | 130~155 | 요구별 실행 증거, 엣지 케이스 (`$verify`) | `$check`(독립 재계산) |
 | 155~180 | 제출 문서·점검·제출 (`$submit`) | `$explainback`(설명 연습) |
 
