@@ -66,7 +66,7 @@ mkdir -p /tmp/kit && curl -fsSL https://codeload.github.com/Ryanpark3142/cofa-ki
 |---|---|---|
 | 1 메인 | 파악·담당자 질문·계획·통합·제출 | `$kickoff` → `다음` |
 | 2 작업 | 메인이 `$delegate` 로 만든 작업 하나(파일이 안 겹치는 슬라이스) | `$worker T1` |
-| 3 검증·공부 | 구현을 기다리는 동안 독립 검증·코드 이해·설명 연습 | `$check` · `$explain <파일>` · `$explainback` |
+| 3 검증·공부 | 구현을 기다리는 동안 독립 검증·코드 이해·설명 연습 | `$check` · `$explain`(알아서 골라 설명, 이어 듣기는 `ㄱ`) · `$explainback` |
 
 섞이지 않게 하는 장치:
 - **작업 파일** `.cofa/tasks/T<n>.md`: 수정 가능한 파일·완료 기준 명령·입출력 계약. 파일이 겹치면 `task new` 가 경고한다
