@@ -44,7 +44,7 @@ mkdir -p /tmp/kit && curl -fsSL https://codeload.github.com/Ryanpark3142/cofa-ki
 설치 스크립트가 하는 일(사용자 파일은 덮어쓰지 않음, `~/.codex` 는 건드리지 않음, 외부 접속 없음):
 - 먼저 `node` 18 이상·`git` 을 확인하고, 없으면 아무것도 바꾸지 않고 멈춘다
 - `AGENTS.md` 생성(이미 있으면 뒤에 덧붙임 — 과제 지침이 우선. `AGENTS.override.md` 가 있으면 거기에도)
-- `.agents/skills/` 에 스킬 16개 복사(Codex 가 저장소 스킬로 인식)
+- `.agents/skills/` 에 스킬 17개 복사(Codex 가 저장소 스킬로 인식)
 - `PLAN.md` `DECISIONS.md` `WORKLOG.md` 양식 생성
 - 도구 사본을 `.cofa/kit/` 에 둠(`/tmp` 는 환경이 일시정지되면 사라질 수 있어서). 도구·잠금 파일은 `.cofa/.gitignore` 로 커밋에서 뺀다
 - 시작 시각 기록, 실행 환경 출력, **이번에 만든 파일만** 커밋(플랫폼 `.gitignore` 가 무시하는 경로는 건너뜀)

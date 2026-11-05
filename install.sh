@@ -77,7 +77,7 @@ if [ -f AGENTS.md ]; then
   else
     { printf '\n\n'; cat "$KIT/AGENTS.md"; } >> AGENTS.md
     ADDED+=(AGENTS.md)
-    say "기존 AGENTS.md 뒤에 규칙을 덧붙였습니다. 과제 지침이 앞에 있으니 그쪽이 우선입니다."
+    say "기존 AGENTS.md 뒤에 규칙을 덧붙였습니다. 키트 규칙 첫 문단에 과제 지침이 우선이라고 적혀 있습니다."
   fi
 else
   cp "$KIT/AGENTS.md" AGENTS.md
