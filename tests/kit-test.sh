@@ -26,7 +26,7 @@ echo "[1] 설치·재설치"
 newws main
 bash "$KIT/install.sh" > "$O" 2>&1; rc=$?
 t "설치 종료 코드 0" [ "$rc" -eq 0 ]
-t "설치 출력에 --yolo 안내" has "$O" "codex --yolo"
+t "설치 출력에 Full Access 안내" has "$O" "/permissions"
 for f in AGENTS.md PLAN.md DECISIONS.md WORKLOG.md .cofa/.gitignore .cofa/started_at .cofa/kit/scripts/kit.mjs .cofa/kit/docs/card.md .agents/skills/worker/SKILL.md .agents/skills/check/SKILL.md .agents/skills/next/SKILL.md; do
   t "설치됨: $f" [ -e "$f" ]
 done

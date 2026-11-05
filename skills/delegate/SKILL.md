@@ -21,7 +21,7 @@ description: 메인 세션에서 파일이 겹치지 않고 완료 기준이 명
    ```
 2. 생긴 `.cofa/tasks/T<n>.md` 의 「입출력 계약」 을 2~3줄 채운다(함수 이름·인자·반환, 파일 형식, 예시 입력 → 기대 출력). 작업 세션은 이 파일만 보고 일한다.
 3. 사용자에게 그대로 안내한다:
-   > 터미널 새 탭(+) → `codex --yolo` → `$worker T<n>`
+   > 터미널 새 탭(+) → `codex` → `/permissions` → `Full Access` → `$worker T<n>`
    탭을 열기 번거로운 짧은 일이면 이 세션의 서브에이전트에게 맡겨도 된다: 「T<n> 을 서브에이전트에게 맡겨서 `.agents/skills/worker/SKILL.md` 절차대로 하게 해줘」.
 4. 그동안 메인은 다른 슬라이스·담당자 질문·검증을 한다. 맡긴 파일은 고치지 않는다.
 
@@ -33,4 +33,4 @@ description: 메인 세션에서 파일이 겹치지 않고 완료 기준이 명
 5. `node .cofa/kit/scripts/kit.mjs task T<n> 검증됨`, 한 줄 기록: `kit.mjs log "T<n> 위임 → 메인 재검증 통과(증거 #N)"`.
 
 ## 비상: 탭·서브에이전트가 둘 다 안 될 때
-새 터미널에서 비대화형으로: `codex exec --yolo -C "$PWD" "\$worker T<n>"`. 결과는 작업 파일의 「결과」 절에 남는다.
+새 터미널에서 비대화형으로: `codex exec -s workspace-write -C "$PWD" "\$worker T<n>"`. 결과는 작업 파일의 「결과」 절에 남는다. 커밋을 못 했으면 메인이 위 4번으로 커밋한다.

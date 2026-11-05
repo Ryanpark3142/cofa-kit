@@ -20,11 +20,7 @@ Codex 에 시킬 때(체험에서 성공, 승인 2번):
 github.com/Ryanpark3142/cofa-kit 를 /tmp/kit 에 받아서 README 대로 설치해줘
 ```
 
-설치 후 Codex 를 **승인 창 없이** 연다(이미 열려 있으면 끄고 다시). 탭을 새로 열 때마다 같은 명령:
-```bash
-codex --yolo
-```
-`--yolo` 는 `--dangerously-bypass-approvals-and-sandbox` 의 짧은 이름이다. 거부되면 `codex` 로 열고 `/permissions` → `Full Access`. 폴더 신뢰를 물으면 신뢰한다. 확인(한 번만): `파일을 열지 말고, 지금 받은 지침에 있는 cofa-kit 원칙 6개의 제목과 쓸 수 있는 스킬 이름만 말해줘.`
+설치 후 `codex` 를 열고 `/permissions` → `Full Access` 를 고른다. 탭을 새로 열 때마다 같다. 폴더 신뢰를 물으면 신뢰한다. 확인(한 번만): `파일을 열지 말고, 지금 받은 지침에 있는 cofa-kit 원칙 6개의 제목과 쓸 수 있는 스킬 이름만 말해줘.`
 
 ---
 
@@ -122,7 +118,7 @@ $debug 이 오류의 원인 가설 2~3개를 근거와 함께 내고, 가설을 
 ```
 $delegate 슬라이스 <N> 을 다른 탭에 맡기자. 입출력 계약에 손계산 기대값을 넣어줘.
 ```
-**[탭2]** 터미널 `+` → `codex --yolo` →
+**[탭2]** 터미널 `+` → `codex` → `/permissions` → `Full Access` →
 ```
 $worker T1
 ```
@@ -204,5 +200,5 @@ $explain 이해 안 가: <방금 나온 것>. 한 토막만, 처음 나온 용�
 
 - 진행 점검: `kit.mjs board 를 보고 상태·누락·막힘·다음 행동을 5줄로.`
 - 범위 점검: `지금까지 만든 것 중 요구 ID 와 연결되지 않는 코드가 있으면 알려줘. 지우지는 말고.`
-- 세션 교체(컨텍스트가 길어졌을 때): `$handoff` → 새 `codex --yolo` 세션에서 `kit.mjs board 와 WORKLOG.md 의 현재 상태를 읽고 이어서 하자.`
+- 세션 교체(컨텍스트가 길어졌을 때): `$handoff` → 새 Codex 세션(`/permissions` → `Full Access`)에서 `kit.mjs board 와 WORKLOG.md 의 현재 상태를 읽고 이어서 하자.`
 - 서버 확인: `서버를 0.0.0.0:<포트>로 띄우고 curl 로 <경로> 응답을 보여줘. Browser 탭에 넣을 포트와 경로를 알려줘.`

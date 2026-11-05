@@ -23,7 +23,7 @@ description: 대화가 길어져 응답이 느려지거나 같은 실수를 반�
    - 막힘: <없음 | 무엇>
    ```
 2. 커밋: `node .cofa/kit/scripts/kit.mjs commit -m "chore: 세션 인계 상태"` (기록 파일만 커밋된다).
-3. 사용자에게 안내한다: `/new`(또는 Codex 를 닫고 다시 `codex --yolo`) 후 아래 문장을 입력.
+3. 사용자에게 안내한다: `/new`(또는 Codex 를 닫고 다시 `codex` → `/permissions` → `Full Access`) 후 아래 문장을 입력.
    ```
    kit.mjs board 와 WORKLOG.md 의 현재 상태, DECISIONS.md, PLAN.md 를 읽고 지금 상황을 5줄로 요약해줘. 내가 확인한 뒤 다음 할 일을 시작하자.
    ```

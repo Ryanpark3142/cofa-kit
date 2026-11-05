@@ -118,7 +118,7 @@ try {
         const t = core.newTask(root, { title: args.join(' '), files: opt.files, done: opt.done, reqs: opt.req, goal: opt.goal });
         console.log(`${t.id} 만듦 → ${t.file} (「입출력 계약」 칸을 2~3줄 채운다)`);
         for (const o of t.overlaps) console.log(`⚠ 파일 겹침: ${o} — 한 파일은 한 작업만 고치게 나눈다`);
-        console.log(`사용자에게: 터미널 새 탭(+) → codex --yolo → $worker ${t.id}`);
+        console.log(`사용자에게: 터미널 새 탭(+) → codex → /permissions → Full Access → $worker ${t.id}`);
       } else if (sub === 'list' || !sub) console.log(core.renderTasks(core.loadTasks(root)));
       else console.log(core.setTaskStatus(root, sub, args[0]));
       break;

@@ -178,8 +178,7 @@ fi
 cat <<EOF
 
 다음:
-  1) Codex 를 승인 창 없이 연다(이미 열려 있으면 Ctrl+C 두 번으로 끄고 다시): codex --yolo
-     (--yolo = --dangerously-bypass-approvals-and-sandbox. 거부되면 codex 를 열고 /permissions → Full Access)
+  1) codex 를 열고 /permissions → Full Access 를 고른다(이미 열려 있으면 그 세션에서, 탭마다 한 번)
   2) 첫 입력: \$kickoff   그다음부터는 「다음」 만 쳐도 단계를 골라 진행한다.
      과제 시작 시각이 설치 시각과 다르면: node .cofa/kit/scripts/kit.mjs start HH:MM
   3) 탭 나누기(메인·작업·검증/설명)와 입력 문장 한 장: node .cofa/kit/scripts/kit.mjs card

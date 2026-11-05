@@ -1,6 +1,6 @@
 # cofa-kit 한 장  (다시 보기: node .cofa/kit/scripts/kit.mjs card)
 
-## 탭 나누기 — 터미널 `+` 로 새 탭, 탭마다 `codex --yolo`
+## 탭 나누기 — 터미널 `+` 로 새 탭, 탭마다 `codex` → `/permissions` → `Full Access`
 | 탭 | 맡는 일 | 첫 입력 |
 |---|---|---|
 | 1 메인 | 처음부터 끝까지: 파악·질문·계획·통합·제출 | `$kickoff` → 그다음은 `다음` |
@@ -26,7 +26,7 @@ README 정독 · 담당자에게 질문 보내기(하나씩)·답 붙여넣기 �
 ## 막히면
 | 상황 | 할 일 |
 |---|---|
-| `codex --yolo` 가 거부됨 | `codex` → `/permissions` → Full Access |
+| 승인 창이 계속 뜸 | `/permissions` → `Full Access` 를 이 탭에서 골랐는지 확인. 안 되면 승인 창마다 `p` |
 | 스킬을 모른다고 함 | `.agents/skills/<이름>/SKILL.md 를 읽고 그대로 해줘` |
 | `index.lock` 오류 | 다른 탭이 커밋 중 → 잠시 뒤 다시 |
 | 응답이 느리고 대화가 김 | `$handoff` → `/new` |

@@ -10,7 +10,7 @@
 > git clone --depth 1 https://github.com/Ryanpark3142/cofa-kit /tmp/kit && bash /tmp/kit/install.sh
 > ```
 > clone 이 실패하면: `mkdir -p /tmp/kit && curl -fsSL https://codeload.github.com/Ryanpark3142/cofa-kit/tar.gz/refs/heads/main | tar xz -C /tmp/kit --strip-components=1 && bash /tmp/kit/install.sh`
-> 끝나면 출력의 「실행 환경」 요약 3줄과 맨 아래 「다음:」 안내(`codex --yolo` 로 다시 여는 명령 포함)를 사용자에게 그대로 전한다. 이미 `/tmp/kit` 이 있으면 clone 대신 `git -C /tmp/kit pull` 후 install.sh 를 실행한다.
+> 끝나면 출력의 「실행 환경」 요약 3줄과 맨 아래 「다음:」 안내(`/permissions` → `Full Access` 포함)를 사용자에게 그대로 전한다. 이미 `/tmp/kit` 이 있으면 clone 대신 `git -C /tmp/kit pull` 후 install.sh 를 실행한다.
 
 | 구성 | 내용 |
 |---|---|
@@ -50,7 +50,7 @@ mkdir -p /tmp/kit && curl -fsSL https://codeload.github.com/Ryanpark3142/cofa-ki
 - 시작 시각 기록, 실행 환경 출력, **이번에 만든 파일만** 커밋(플랫폼 `.gitignore` 가 무시하는 경로는 건너뜀)
 
 설치 뒤:
-1. Codex 를 **승인 창 없이** 연다(이미 열려 있으면 끄고 다시): `codex --yolo` — `--dangerously-bypass-approvals-and-sandbox` 의 짧은 이름(codex-cli 0.164 에서 옵션 충돌 메시지로 확인). 거부되면 `codex` 로 열고 `/permissions` → `Full Access`. 실행 옵션은 그 실행에만 적용되고 `~/.codex/config.toml` 을 고치지 않는다.
+1. `codex` 를 열고 `/permissions` → `Full Access` 를 고른다(이미 열려 있으면 그 세션에서, 탭마다 한 번).
 2. `$kickoff` 로 시작한다. 그다음부터는 `다음` 만 쳐도 된다.
 3. 탭 나누기·입력 문장 한 장: `node .cofa/kit/scripts/kit.mjs card`
 - (선택) MCP: `kit.mjs mcp` 가 출력하는 JSON 을 IDE 의 MCP 탭에. 없어도 모든 기능이 kit.mjs 로 된다.
@@ -60,7 +60,7 @@ mkdir -p /tmp/kit && curl -fsSL https://codeload.github.com/Ryanpark3142/cofa-ki
 `codex plugin marketplace add Ryanpark3142/cofa-kit` → `codex plugin add cofa-kit@cofa-kit-local` 로 스킬(`cofa-kit:<이름>`)·MCP·훅을 받을 수 있다. 이 명령은 `~/.codex/config.toml` 에 항목을 쓰므로 시험 환경에서는 **A 만 쓴다.** 개인 PC 연습용이다.
 
 ## 여러 탭으로 일하기
-웹 IDE 터미널은 탭을 여러 개 열 수 있고, 탭마다 `codex --yolo` 를 띄우면 같은 폴더에서 Codex 세션이 동시에 돈다.
+웹 IDE 터미널은 탭을 여러 개 열 수 있고, 탭마다 `codex` 를 띄우고 `/permissions` → `Full Access` 를 고르면 같은 폴더에서 Codex 세션이 동시에 돈다.
 
 | 탭 | 맡는 일 | 첫 입력 |
 |---|---|---|
@@ -95,14 +95,14 @@ mkdir -p /tmp/kit && curl -fsSL https://codeload.github.com/Ryanpark3142/cofa-ki
 로컬(Windows Git Bash, Node 25, codex-cli 0.164.0, 모델 gpt-6.1-sol)에서 확인한 것:
 - `tests/kit-test.sh` 83개 항목 통과: 설치·재설치, 시작 시각 보호, 요구 20개 동시 등록(유실·중복 0), 실행 10개 동시(증거 번호 겹침 0), 0건 실행(pytest·node --test·go test)·시간 초과 판정, 작업 파일·겹침 경고, 경로 지정 커밋(다른 탭이 staged 한 파일 제외)·`index.lock` 재시도, 문서 커밋·산출물 생성에는 「재검증 필요」 오경보 없음, 숨김 폴더 비밀값 무시, 하위 git 저장소, 플랫폼 `.gitignore` 가 숨김 폴더를 무시할 때, MCP
 - Codex 실측(샌드박스 workspace-write): `$kickoff`(요구 등록·데이터 점검) → 담당자 답 반영·`$plan`·`$delegate`(작업 파일에 손계산 기대값) → `$build-slice` 2회 → **작업 탭 `$worker T1` 과 검증 탭 `$check` 동시 실행**(증거·요구 기록 충돌 없음, 검증 탭이 84.95%/85% 경계를 독립 계산으로 확인) → `다음` 이 「작업 완료 → 메인 재검증」 을 골라 처리 → `$submit`
-- 이 PC 의 Codex 샌드박스는 `.git` 쓰기를 막아 Codex 의 커밋은 실패했고, 키트가 「사용자가 터미널에서 같은 명령」 으로 안내하는 것까지 확인했다(시험장은 `codex --yolo` 라 해당 없음)
+- 이 PC 의 Codex 샌드박스는 `.git` 쓰기를 막아 Codex 의 커밋은 실패했고, 키트가 「사용자가 터미널에서 같은 명령」 으로 안내하는 것까지 확인했다(시험장은 Full Access 라 해당 없음)
 - `codex debug prompt-input` 으로 AGENTS.md 블록과 스킬 16개가 모델 입력에 들어가는 것
 
 시험 환경 사전 체험(2026-10-31)에서 확인한 것: Codex 한 문장 설치 성공, 작업 폴더 = 홈이라 훅은 설치되지 않음, Codex 가 규칙·스킬·양식·`kit.mjs` 를 인식. 자세한 관찰은 `docs/exam-day.md`.
 
 확인하지 못한 것:
 - 진짜 리눅스에서의 `kit.mjs run`. 같은 호출(`timeout -k 5 N bash -c …`, 출력은 파일)을 Git Bash 의 GNU timeout·bash 로 따로 돌려 종료 코드 보존·시간 초과 124·백그라운드 프로세스를 남겨도 즉시 반환·bash 문법을 확인했다
-- 시험 환경에서 `codex --yolo` 가 허용되는지, MCP 탭 등록
+- 시험 환경의 MCP 탭 등록
 
 ## 라이선스
 MIT

@@ -7,7 +7,7 @@
 ## 과제 시간표
 | 분 | 단계 | 메인 탭 | 다른 탭 |
 |---|---|---|---|
-| 0~3 | 설치 | 터미널에 `git clone --depth 1 https://github.com/Ryanpark3142/cofa-kit /tmp/kit && bash /tmp/kit/install.sh` → `codex --yolo`(거부되면 `/permissions` → Full Access) | |
+| 0~3 | 설치 | 터미널에 `git clone --depth 1 https://github.com/Ryanpark3142/cofa-kit /tmp/kit && bash /tmp/kit/install.sh` → `codex` → `/permissions` → `Full Access` | |
 | 3~15 | 파악 | 지시서 정독(사람), `$kickoff`, 담당자에게 구체적 질문 하나씩(`$interview`), 데이터면 `$data-first-look` | 탭3 `$explain`(과제 설명) |
 | 15~30 | 계획 | 설계안 비교 → 내가 고르고 이유 한 줄 → 슬라이스(바꿀 파일·검증) → PLAN.md (`$plan`) | 탭3 `ㄱ`(계획 설명) |
 | 30~130 | 구현 | 슬라이스마다 구현→검증→커밋(`$build-slice`, 또는 `다음`). 「맡김: 가능」 슬라이스는 `$delegate`. 100분에 필수 미완이면 가산 기능 버림 | 탭2 `$worker T<n>` · 탭3 슬라이스마다 `ㄱ`(단계 설명) |
@@ -23,7 +23,7 @@
 - Codex 샌드박스에서 외부 주소는 DNS 부터 안 된다(`curl developers.openai.com` → exit 6). 문서 조회에 기대지 않는다.
 - Codex 가 확인한 제한: `~/.codex/config.toml` 수정 금지, **관리 포트 8090·8081·2222 사용 금지**, 앱은 다른 포트에 `0.0.0.0`, git push 금지.
 - 승인 창에는 `2. Yes, and don't ask again for commands that start with … (p)` 가 있다. Full Access 를 못 쓰면 반복 명령은 처음 한 번 `p` 로 승인한다.
-- 승인을 통째로 줄이는 방법(codex-cli 0.164 기준, 시험 환경에서는 미확인): Codex 를 `codex --yolo`(= `--dangerously-bypass-approvals-and-sandbox`)로 열거나 세션 안에서 `/permissions` → `Full Access`. 실행 옵션은 그 실행에만 적용되고 `config.toml` 을 고치지 않는다. 플랫폼이 막아 두었으면 거부된다.
+- 승인을 통째로 줄이는 방법: 탭마다 세션 안에서 `/permissions` → `Full Access`(사용자가 가능함을 확인, 2026-11-05). 샌드박스를 끄는 실행 옵션은 쓰지 않는다.
 - 터미널은 `+` 로 탭을 여러 개 열 수 있다 → 탭마다 Codex 세션을 따로 띄울 수 있다.
 - Cofa Helper 는 플랫폼 사용법만 답하고 과제 풀이·코드 리뷰는 하지 않는다.
 - 확인 문제: 2문항, 문항당 약 3분 타이머, 복사·붙여넣기 불가, 시간이 끝나면 자동 확정, 이전 문항으로 못 돌아감. 1번 「체험 과제에서 구현한 서비스의 핵심 동작과 이를 확인한 방법을 설명해 주세요.」

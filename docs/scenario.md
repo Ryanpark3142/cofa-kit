@@ -37,8 +37,7 @@ git clone --depth 1 https://github.com/Ryanpark3142/cofa-kit /tmp/kit && bash /t
   mkdir -p /tmp/kit && curl -fsSL https://codeload.github.com/Ryanpark3142/cofa-kit/tar.gz/refs/heads/main | tar xz -C /tmp/kit --strip-components=1 && bash /tmp/kit/install.sh
   ```
 
-**[터미널]** `codex --yolo` (= `--dangerously-bypass-approvals-and-sandbox`, 승인 창 없이) → 폴더 신뢰를 물으면 신뢰 → `/model` 에서 **gpt-6.1-sol · medium** 확인.
-`--yolo` 가 거부되면 `codex` 로 열고 `/permissions` → `Full Access`.
+**[터미널]** `codex` → 폴더 신뢰를 물으면 신뢰 → `/permissions` → `Full Access` → `/model` 에서 **gpt-6.1-sol · medium** 확인.
 
 **[Codex]** 키트가 읽혔는지 확인 (한 번만):
 ```
@@ -113,7 +112,7 @@ Browser 에서 <무엇>을 해 봤더니 <결과>였어. 기록해줘.
 
 **나눌 수 있는 슬라이스가 있으면 (PLAN.md 「맡김: 가능」):**
 **[Codex]** `$delegate 슬라이스 <N> 을 다른 탭에 맡기자.` → T 파일이 생기고 안내가 나온다.
-**[탭2]** 터미널 `+` → `codex --yolo` → `$worker T1`. 끝나면 「결과」 5줄을 보고하고 멈춘다.
+**[탭2]** 터미널 `+` → `codex` → `/permissions` → `Full Access` → `$worker T1`. 끝나면 「결과」 5줄을 보고하고 멈춘다.
 **[Codex]** 메인은 그동안 다음 슬라이스. 탭2 가 끝났으면 `다음` → 메인이 완료 기준 명령을 다시 돌려 확인한다.
 
 **이해 확인 (슬라이스가 끝날 때마다, 서술형 대비) — 탭3 에서:**
@@ -209,7 +208,7 @@ yield-report.mjs 의 classify() 에서 평균 수율 85 미만을 경고로 판�
 | 상황 | 할 일 |
 |---|---|
 | clone·curl 둘 다 안 됨 | 키트 없이 진행. **[Codex]** 첫 줄에 「요구 등록 → 계획 → 작은 단위 구현·테스트·커밋 → 검증 → 제출 문서 순서로, 요구에 없는 기능은 만들지 말고, 실행한 것만 말해줘」 |
-| `codex --yolo` 거부 | `codex` → `/permissions` → Full Access. 그것도 막히면 승인 창마다 `p`(같은 명령 다시 묻지 않기) |
+| 승인 창이 계속 뜸 | `/permissions` → `Full Access` 를 이 탭에서 골랐는지 확인. 그래도 뜨면 승인 창마다 `p`(같은 명령 다시 묻지 않기) |
 | 스킬(`$kickoff`)을 모른다고 함 | `.agents/skills/kickoff/SKILL.md 를 읽고 그 절차대로 해줘.` |
 | `index.lock` 오류 | 다른 탭이 커밋 중이다. `kit.mjs commit` 은 잠시 뒤 스스로 다시 한다 |
 | 두 탭이 같은 파일을 고쳤다 | `git diff <파일>` 로 보고 메인이 합친다. 이후 그 파일은 한 탭만 |
