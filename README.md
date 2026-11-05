@@ -101,7 +101,7 @@ mkdir -p /tmp/kit && curl -fsSL https://codeload.github.com/Ryanpark3142/cofa-ki
 시험 환경 사전 체험(2026-10-31)에서 확인한 것: Codex 한 문장 설치 성공, 작업 폴더 = 홈이라 훅은 설치되지 않음, Codex 가 규칙·스킬·양식·`kit.mjs` 를 인식. 자세한 관찰은 `docs/exam-day.md`.
 
 확인하지 못한 것:
-- 진짜 리눅스에서의 `kit.mjs run`. 같은 호출(`timeout -k 5 N bash -c …`, 출력은 파일)을 Git Bash 의 GNU timeout·bash 로 따로 돌려 종료 코드 보존·시간 초과 124·백그라운드 프로세스를 남겨도 즉시 반환·bash 문법을 확인했다
+- 시험장 Linux 자체와 그곳의 Codex 동작. GitHub Actions 의 Ubuntu(Node 22)에서는 `tests/kit-test.sh`(시간 초과 포함)와 `tests/linux-smoke.sh`(홈이 저장소인 설치, `run`·`commit`·`board`·`check`)가 통과했다. Codex 자체와 `python` 없는 환경은 그 시험에 들어가지 않는다
 - 시험 환경의 MCP 탭 등록
 
 ## 라이선스
