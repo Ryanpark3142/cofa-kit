@@ -15,7 +15,7 @@
 | 구성 | 내용 |
 |---|---|
 | `AGENTS.md` | Codex 작업 규칙(주도권·범위 통제·증거 기반 검증·여러 탭 안전 규칙·시간·보고 형식) |
-| `skills/` | 16개. 메인 탭: `next`(「다음」 만 치면 단계를 골라 진행) `kickoff` `interview` `data-first-look` `playbook` `plan` `build-slice` `debug` `verify` `delegate`(다른 탭에 나누기) `handoff` `submit` · 다른 탭: `worker`(맡은 작업) `check`(독립 검증) `explain`(설명) `explainback`(사후 설명 대비) |
+| `skills/` | 17개. 메인 탭: `next`(「다음」 만 치면 단계를 골라 진행) `kickoff` `interview` `data-first-look` `playbook` `plan` `build-slice` `design`(화면 규칙과 `ui.css`, 글꼴 Pretendard 는 OFL) `debug` `verify` `delegate`(다른 탭에 나누기) `handoff` `submit` · 다른 탭: `worker`(맡은 작업) `check`(독립 검증) `explain`(설명) `explainback`(사후 설명 대비) |
 | `skills/playbook/references/` | 과제 유형별 요령(웹·데이터·API·기존 코드·자동화·LLM 기능·문서) + 반도체 용어 |
 | `scripts/kit.mjs` | 상태판(`board`)·요구 추적·실행 증거(`run`)·경로 지정 커밋(`commit`)·작업 나누기(`task`)·제출 점검(`check`). 여러 탭이 동시에 써도 기록이 사라지거나 번호가 겹치지 않는다 |
 | `scripts/profile.mjs` | CSV/TSV 첫 점검(인코딩·형식·결측·키 후보, 개인정보 의심 열은 값 가림) |
