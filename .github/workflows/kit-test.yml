@@ -1,0 +1,17 @@
+# 키트 시험과 홈을 저장소로 쓰는 설치를 실제 리눅스에서 돌리는 워크플로
+name: kit-test
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 키트 시험
+        run: bash tests/kit-test.sh
+      - name: 홈 폴더 저장소에 설치하고 도구 실행
+        run: bash tests/linux-smoke.sh
